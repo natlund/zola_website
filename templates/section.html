@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>{{ section.title }} | Explicator</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/../../essay.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  </head>
+  
+<body>
+
+<header style="background: {{ section.extra.pane_colour }}" >
+    <h1 class="title">{{ section.title }}</h1>
+</header>
+
+<nav>
+  <h3 style="text-align: center;">Navigation Links</h3>
+    {% set home_page = get_section(path=section.ancestors[0]) %}
+      
+    <p><a style="padding-left: 1em;" href="{{ home_page.permalink | safe }}">Home Page</a></p>
+    
+    <a style="padding-left: 2em;" href="{{ section.permalink | safe }}">{{ section.title }}</a>
+
+    {% if section.pages %}
+      <ul style="padding-left: 4em;">
+      {% for page in section.pages %}
+        <li>
+          <a href="{{ page.permalink | safe }}">{{ page.title }}</a>
+        </li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+
+</nav>
+
+<article class="essay">
+  {{ section.content | safe }}
+
+  <ul>
+    {% for page in section.pages %}
+      <li><a href="{{ page.permalink | safe }}">{{ page.title }}</a></li>
+    {% endfor %}
+  </ul>
+
+</article>
+
+<footer>
+  <p class="datestamp"><strong>2022-01-01</strong></p>
+</footer>
+  
+</body>
+</html>

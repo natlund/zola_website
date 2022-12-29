@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>{{ page.title }} | Explicator</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="/../../essay.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
+  </head>
+  
+  <body>
+  
+    {% set topic_path = page.ancestors | last %}
+    {% set topic = get_section(path=topic_path) %}
+
+    <header style="background: {{ topic.extra.pane_colour }}">
+      <h1 class="title">{{page.title }}</h1>
+      <p class="subtitle"><strong>{{ page.date }}</strong></p>
+    </header>
+
+    <nav>
+      <h3 style="text-align: center;">Navigation Links</h3>
+    
+      {% set home_page = get_section(path=page.ancestors[0]) %}
+      <p><a style="padding-left: 1em;" href="{{ home_page.permalink | safe }}">Home Page</a></p>
+
+      {% for ancestor_path in page.ancestors | slice(start=1) %}
+        {% set ancestor = get_section(path=ancestor_path) %}
+        <p><a style="padding-left: {{loop.index + 1 }}em;" href="{{ ancestor.permalink | safe }}">{{ ancestor.title }}</a></p>
+      {% endfor %}
+            
+      <hr>
+      
+      <p><a style="padding-left: 1em;" href="{{ topic.permalink | safe }}">{{ topic.title }}</a></p>
+
+      <ul>
+        {% for sibling_page in topic.pages %}
+          <li>
+            <a href="{{ sibling_page.permalink | safe }}">{{ sibling_page.title }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+      
+      <hr>
+
+      <p style="padding-left: 1em;">{{ page.title }}</p>
+    
+        {% if page.toc %}
+        <ol>
+        {% for h1 in page.toc %}
+            <li>
+                <a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
+                {% if h1.children %}
+                    <ul>
+                        {% for h2 in h1.children %}
+                            <li>
+                                <a href="{{ h2.permalink | safe }}">{{ h2.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </li>
+        {% endfor %}
+        </ol>
+        {% endif %}
+    </nav>
+
+    <article class="essay">
+        {{ page.content | safe }}
+        
+        <p style="text-align: center; font-size: 24pt;"> &#128608 </p>
+    
+    </article>
+    
+    
+  
+    <footer>
+      <p class="datestamp"><strong>2022-01-01</strong></p>
+    </footer>
+  
+  </body>
+
+</html>
