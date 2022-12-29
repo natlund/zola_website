@@ -1,0 +1,1 @@
+\Users\natjl\zola-v0.16.1-x86_64-pc-windows-msvc\zola build --output-dir \Users\natjl\Desktop\zola_build_output
