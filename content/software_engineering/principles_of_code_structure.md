@@ -31,10 +31,14 @@ A lot of unreadable code was written with the intention of being 'extensible'.  
 
 1. In order to extend a piece of code, one must first understand it.  So the total time required to extend the code must include the reading time.  Thus, code that was written to be 'extensible' but is difficult to read, will take longer to modify than readable code that _technically_ requires slightly more work to modify.
 
-2. You Ain't Gonna Need It (YAGNI).  Don't solve tomorrow's problems.  Premature Optimisation is the root of all evil (_Knuth_ 1968). Because:
+2. Code that is easy to extend tends to have a very modular structure, with minimal coupling.  Happily, those are properties of highly readable code also.  Thus, code that is highly readable tends to be highly extensible.
+
+3. You Ain't Gonna Need It (YAGNI).  Don't Solve Tomorrow's Problems.  Premature Optimisation is the root of all evil (_Knuth_ 1974). Because:
     * What is the best time to design a system for extensibility?  Answer: at the time you actually have to extend it.  Only at that point do you have the maximum possible information on the problem.   At any earlier time, you have less information, so will likely make worse engineering decisions.
 
-4. Code that is easy to extend tends to have a very modular stucture, with minimal coupling.  Happily, those are properties of highly readable code also.  Thus, code that highly readable tends to be highly extensible.
+4.  However, Don't Create Tomorrow's Problems.  If you **know** that your code will need to be extended, then that is in fact a specification for the design of the code.  Therefore, choose the most readable solution that meets the need for extensibility.  But keep in mind the previous point, and consider delaying the re-design for extensibility until the time you actually extend it.
+
+Don't solve tomorrow's problems, but don't create tomorrow's problems, either.
 
 Readability is King.  Except in rare circumstances when speed matters, optimise for readability.
 
@@ -415,6 +419,8 @@ If your code requires a logical branch, try to do it only once.  Your code will 
 
 Making the _same_ logical branch (i.e. exactly the same logical conditions) in _multiple_ places should be considered an anti-pattern, or at least a code smell.  The resulting code is always cluttered and messy.  Try to refactor it to have only one occurrence of the logical branch.
 
+### Use Polymorphism To Eliminate Logical Branching
+
 
 # Coupling
 
@@ -432,25 +438,138 @@ Our goal in this chapter is to describe the different types of connection that m
 1. How simple they are to understand.
 2. How easy they are to extend or modify, in particular, how easy it is to swap out one module for another.
 
-The value of assessing Simplicity is obvious, since we value readability above all else.
+The value of assessing Simplicity is obvious, since we usually value readability above all else.
 
-The value of assessing 'Swappability' needs a little more justification.  We may **know** that the code will need to be modified in the future.  In that case, we want to choose methods of connection that give the best compromise between readability and extensibility (ideally, maximise both).  Furthermore, by explicitly analysing the extensibility of a method of coupling, we can pre-empt a lot of vague, misguided bleating about 'reusable code' that OO tossers are prone to emit.  Those wankers often claim that some stupid OO solution is better, when actual analysis of the solution often reveals that it is not.  These pricks just parrot OO dogma without actually examining it in the real world.
+There are a few reasons why we should assess Extensibility: \
+Firstly, suppose we **know** that the code will need to be modified in the future.  Then the specification for the code will include the criterion "Needs to be extensible".  So we choose the _most readable_ solution that provides the extensibility that we need.
 
-Other justifications for making connections 'Swappable': 1) Don't create tomorrow's problems.  2) More easily swappable means more loosely coupled, which in turn tends to correlate with cleaner separation of concerns.
+Secondly, the label 'extensible' is often applied very vaguely.  Object-Oriented methods, in particular, are often claimed to be 'extensible', without much deep analysis as to how easy they actually are to extend, and whether they truly are easier to extend than simpler competing methods.  It is worth doing a little critical examination of this here.
 
-Hmmm.  Maybe this section needs some justification in the first chapter on Readability, at the bit where I rant about extensibility.
+Thirdly, 'swappable' modules must be loosely coupled, which tends to correlate with cleanly separated concerns.
+
 
 ### Types Of Connections
 
 Some types of connection, in approximate order of simplicity.
 
 1. Function call.
-2. Function call of injected function.
-3. Method call on class.
-4. Method call on injected object.
-5. Object instantiation, then method call on object.
+2. Method call on class.
+3. Object instantiation, then method call on object.
+4. Function call of injected function.
+5. Method call on injected object.
 6. Inheritance.  Method call on parent class.
 
+###  Function Call
+
+```py
+def secondary(data):
+    # Do stuff.
+
+
+def main():
+    ...
+    secondary(data)
+    ...
+```
+
+### Method Call On Class
+
+```py
+
+class SomeStupidClass:
+
+    @staticmethod
+    def secondary(data):
+        # Do stuff.
+
+
+def main():
+    ...
+    SomeStupidClass.secondary(data)
+    ...
+```
+
+### Object Instantiation, Then Method Call On Object
+
+```py
+
+class SomeStupidClass:
+
+    def secondary(self, data):
+        # Do stuff.
+
+
+def main():
+    ...
+    stupid_object = SomeStupidClass()
+    stupid_object.secondary(data)
+    ...
+```
+
+### Function Call Of Injected Function
+
+```py
+def secondary(data):
+    # Do stuff.
+
+
+def main(injected_func):
+    ...
+    injected_func(data)
+    ...
+
+
+def orchestrator():
+    ...
+    main(injected_func=secondary)
+
+```
+
+### Method Call On Injected Object
+
+```py
+class SomeStupidClass:
+
+    def secondary(self, data):
+        # Do stuff.
+
+
+
+def main(injected_object):
+    ...
+    injected_object.secondary(data)
+    ...
+
+
+def orchestrator():
+    ...
+    stupid_object = SomeStupidClass()
+    main(injected_object=stupid_object)
+
+```
+
+### Inheritance
+
+```py
+class ParentClass:
+
+   def secondary(self, data):
+       # Do stuff.
+
+
+class MainClass(ParentClass):
+
+    def main():
+        ...
+        self.secondary(data)
+        ...
+
+
+def orchestrator():
+    ...
+    main_processor = MainClass()
+    main_processor.main()
+```
 
 # Coupling Modules Into A Structure
 
