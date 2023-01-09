@@ -6,6 +6,10 @@ weight = 10
 
 <!--When one tackles a technical subject, a degree of confusion is expected; it is a normal part of the learning process.  But a seasoned learner knows that not all confusion is equal.  An uncomfortable grasping and groping feeling accompanies the construction of a mental model of a deep, unfamiliar concept.  This is a healthy stretch of the mind to accommodate a new idea.  But there is a different kind of frustration caused by *bad explanations*.   Those of us with exposure to mathematical thinking are particularly sensitive to three sins: **missing definitions**, **vague definitions**, and **apparent contradictions**.-->
 
+
+_Written in 2016.  Updated early 2023 to remove references to Bitcoin as fiat money, since by about 2017, it had become obvious that, despite early intentions, Bitcoin had completely failed to become a form of money._
+
+
 As I explored monetary theory, I discovered that there is a mainstream economics view, and a banker's view, and they differ.  (There is also the crackpot/gold nut/conspiracist camp, but that can safely considered to be a distortion of the credible camps.)  At length, I realised that different authors were using different definitions of money, and in different contexts.  For example, Niall Ferguson in his excellent book *The Ascent of Money* talked about money as a medium of exchange, then later states that money is *really* a form of *credit*. (No criticism is intended - Niall is a brilliant writer and historian, and deep technical detail was beyond the scope of the book.)
 
 There seemed to be an implicit assumption that all the different definitions of money are equivalent, or in some sense the differences don't matter.  I now suspect that to be a dangerous assumption.  I eventually figured out that the different characterizations of money can be systematically analysed in two dimensions, resulting in six distinguishable types of money. I find that the classification system clarifies the discussion very well, though I am not aware of it anywhere in economic theory.  I present it forthwith.
@@ -41,7 +45,7 @@ Money comes in two classes: **commodity money** and **fiat money**.
 
 Examples of commodity money in use include cigarettes (and other drugs) in prisons, and cattle in Africa.  It could be argued that money in the modern world ultimately derives from houses, but we shall explore that in another essay.
 
-*Fiat* is Latin for 'by decree', which implies some authority to issue the decree that defines something as a unit of currency.  However, authority need not be formal and centralized; a social convention may arise that some particular thing with no inherent value can be traded for goods.  Bitcoin is a recent example.
+*Fiat* is Latin for 'by decree', which implies some authority to issue the decree that defines something as a unit of currency.  Now, _in principle_, authority need not be formal and centralized; it is at least hypothetically possible that a social convention may arise that some particular thing with no inherent value can be traded for goods.  Bitcoin is a recent example of an attempt at creating a decentralised fiat currency.  However, by about 2017, it had become obvious that Bitcoin was in no sense money, merely an instrument for speculation.  The crypto-collapse of 2022 rammed home the complete failure of the project as a currency.
 
 In lay discussions of money (especially those of a psycho-ceramic nature), gold is usually *contrasted* with fiat money.  The claim is that only gold is *real* money, while money in the bank, or bank notes, are just 'funny' money.  In fact, gold is largely fiat money!  The *industrial* demand for gold is only a fraction of total demand.  In ancient Incan culture, gold was not used as money, and was not considered particularly scarce.  The modern obsession with gold as money actually traces back to Ancient Rome, where Caesars had pictures of themselves engraved onto noble metal coins, and decreed that these coins could be used as payment.
 
@@ -87,7 +91,7 @@ We are now ready to summarize our classes and orders of money into a six part ta
 
 |                |  Commodity Money           |  Fiat Money                   |
 |----------------|:--------------------------:|:-----------------------------:|
-|  Zeroth Order  |  Rice, Cigarettes          |  Central Bank Money, Bitcoin  |
+|  Zeroth Order  |  Rice, Cigarettes          |  Central Bank Money           |
 |  First Order   |  Warehouse Receipts        |  Bank Deposits                |
 |  Second Order  |  Commodity Loan Contracts  |  Bank Deposits                |
 
@@ -98,7 +102,7 @@ We are now ready to summarize our classes and orders of money into a six part ta
     |                |                            |                               |
     +================+============================+===============================+
     |                |                            |                               |
-    |  Zeroth Order  |  Rice, Cigarettes          |  Central Bank Money, Bitcoin  |
+    |  Zeroth Order  |  Rice, Cigarettes          |  Central Bank Money           |
     |                |                            |                               |
     +----------------+----------------------------+-------------------------------+
     |                |                            |                               |
