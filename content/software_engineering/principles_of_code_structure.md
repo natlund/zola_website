@@ -97,7 +97,7 @@ Abstraction can be applied to abstractions themselves.  For example, the abstrac
 
 Hierarchies of abstractions can be constructed: sets of sets; sets within sets.
 
-The value of such set hierarchies is that they underpin logical inference.  A classic illustration is the logical syllogisms formalised in Ancient Greece: "All humans are mortal.  Socrates is a human.  Therefore, Socrates is mortal."  Various other logical rules have been formalised.
+The value of such set hierarchies is that they underpin logical inference.  A classic illustration is the logical syllogisms formalised in Ancient Greece: "All humans are mortal.  Socrates is a human.  Therefore, Socrates is mortal."  Various other logical rules have also been formalised.
 
 ### The Power Of Abstraction
 
@@ -133,7 +133,7 @@ It would be easy to mock these peasants for their lack of sophisticated reasonin
 #### Correct Abstractions
 
 Scientific knowledge consists of elaborate conceptual structures that accurately map to the real world, and are internally consistent.  The key distinction that makes a concept 'scientific' is that it has been _tested by experiment_.  Abstractions are formulated, and eventually confirmed (or falsified) by experiments in the real world.
-  * For example, the quark subatomic particle started out as a purely mathematical abstraction that simplified and clarified the theory of subatomic particles.  But much later, high-energy physics experiments confirmed the physical existence of quarks.
+  * For example, the subatomic particle known as a _quark_ started out as a purely mathematical abstraction that simplified and clarified the theory of subatomic particles.  But much later, high-energy physics experiments confirmed the physical existence of quarks.
 
 But if our abstractions cannot be tested with the rigour of science, then how do we decide if they are 'good' or not?
 
@@ -145,7 +145,7 @@ The answer to this question is deep, and beyond the scope of this essay.  Only s
 
 Thus, abstract reasoning is actually very risky, in the following sense: It can be done very badly, leading to a false understanding of the universe, and that false understanding may persist for a very long time, because of the difficulty of testing it.  Enormous amounts of time and energy may be wasted on building castles in the air, discussing how many angels may dance on the head of a pin.
 
-Primitive people don't suffer much from this problem, because errors in concrete thinking are usually immediately visible.  "Trust me, there are no bears in this cave!"  _Chomp_.  But it doesn't take much additional cultural sophistication to suffer badly from it.  "We need to throw a virgin into the volcano to prevent it from erupting".  _"Aaaaargh_".  Silence.  "See, it's working."
+Primitive people don't suffer much from this problem, because errors in concrete thinking are usually immediately visible.  "Trust me, there are no bears in this cave!"  _Chomp_.  But it doesn't take much additional cultural sophistication to suffer badly from it.  "We need to throw a virgin into the volcano to prevent it from erupting".  _"Aaaaargh!_"  Silence.  "See, it's working."
 
 #### Correct Level Of Abstraction
 
@@ -278,23 +278,23 @@ A number of concerns have been identified that appear time and time again in man
 
 # Separate Inherent Complexity from Collateral Complexity
 
-The 'complexity' of a computer program is difficult to define precisely, but for our purposes, it suffices to employ common-sense notions along the lines of 'complexity = amount of stuff, and amount of connections between stuff'.  More complexity is obviously harder to understand.  A key focus of good software engineering is managing complexity: disentangling it, and minimising it.
+There are various definitions of the 'complexity' of a computer program, some highly mathematical, but for our purposes, it suffices to employ common-sense notions along the lines of 'complexity = amount of stuff, and amount of connections between stuff'.  More complexity is obviously harder to understand.  A key focus of good software engineering is managing complexity: disentangling it, and minimising it.
 
 Complexity can be broken into three different types:
 
-#### Inherent Complexity
+### Inherent Complexity
 
 Inherent complexity is the complexity of the actual domain problem itself.  It may be the complexity of a mathematical algorithm, or the complexity of some business logic, or the complexity of managing a long-term interaction with a user.
 
 Inherent complexity cannot be reduced, because it is inherent to the domain problem itself.
 
-#### Collateral Complexity
+### Collateral Complexity
 
 Collateral complexity is the complexity in the details of the solution to the domain problem, that is not inherent to the problem.  This is best explained with an example:
 
 Suppose the domain problem requires saving some data to a database.  The action 'save data to database' is considered part of the _inherent complexity_ of the problem, because it is a critical step in the algorithm.  But the _details_ on how to connect to the database, where the passwords are stored, the exact protocol for calling a Postgres database, _et cetera_, are considered to be only _collateral_ complexity, because these low-level details do not fundamentally matter to the solution.  This collateral complexity is essential to solve the domain problem, but it is not _inherent_, because the details could change quite drastically (for example, by changing to a different database) without affecting the operation of the solution.
 
-#### Accidental Complexity
+### Accidental Complexity
 
 Accidental complexity is any complexity in the design that is _not_ essential to solve the domain problem.  The problem has an inherent complexity, and there is the collateral complexity of the low-level details _required_ to solve the problem, and any remaining complexity is essentially due to _bad design_.
 
@@ -302,7 +302,7 @@ Classic examples include: poor use of Object Oriented design, unstructured spagh
 
 The point about accidental complexity is that is _can_ and _should_ be eliminated.  In this sense, it is completely different from collateral complexity, which _cannot_ be eliminated.
 
-#### Notes
+### Notes
 
 Separating inherent complexity from collateral complexity is a good example of the art of abstraction at work, and one of the first abstractions that novice programmers naturally tend to start doing.  Pulling the boring details of a database connection into a _separate function_ is an excellent and easy first step towards a better program structure.  Several lines of code are recognised to be all contributing to the same _abstract_ activity - 'save to database' - and are not part of any other concern.  Therefore, this Concern is separated out into its own function.  Engineers would often describe this with language like "abstracting out the database connection."
 
@@ -313,7 +313,7 @@ In summary:
 2. Eliminate Accidental Complexity.  Or at least understand the trade-offs.
 
 
-# Separation Of Functions From State
+# Separation Of Functions And State
 
 The Constitution of the United States Of America contains the important concept of 'separation of church and state'.  A similarly important concept in software engineering is the separation of _functions_ from state.  (This is a pun on the two different meanings of 'state', as we shall see.)
 
@@ -344,7 +344,7 @@ State is a broad, abstract term in software engineering.  In practice, it means 
 
 **State:** Any **variables** that:
 1. Can **change**, especially in these two ways:
-    * In non-deterministic ways, for example, due to user input.
+    * In non-deterministic ways, for example, due to random user input.
     * In hard-to-understand ways, for example, during the convoluted machinations of a complex algorithm.
 
 Variables that change in predictable, easy-to-understand ways are also _state_.  However, such simple state is often localised and easy to manage.  The advice of this Chapter 'Separate State from everything else' still applies, of course.  A good example is an Iterator, which we'll cover in a moment.
@@ -373,6 +373,22 @@ An Iterator provides an easy way to loop through some sequential data structure,
 3. The collateral complexity of managing a variable to index into the sequence, and terminating the sequence, _etc_. is _hidden away_ inside the iterator module.
 4. Thus, state has been concentrated into the iterator module, and extracted out of (separate from) the main code.
 
+Consider a classic for-loop that iterates through an array, in C++:
+```C++
+for(int i = 0; i > array_length; i++) {
+    element = some_array[i]
+    // Do stuff.
+    // Horrifyingly, it is possible to modify the iterator variable i.
+} 
+```
+The irrelevant iterator variable _i_ is exposed in the code.  Even worse, it is possible to _modify_ the iterator variable during each iteration, so misguided programmers could write insane 'clever' code that is impossible to reason about.
+
+With the Iterator abstraction, code is much simpler and safer.  Consider this Python code:
+```py
+for element in some_array:
+    # Do stuff.
+```
+The _state_ variable _i_ has now vanished.  It is isolated inside the Iterator for ```some_array```, and no longer appears in our algorithm.  State has been successfully separated from our function.
 
 #### Warning:  Don't Add Complexity Via Too Little State
 
@@ -380,6 +396,161 @@ It is sometimes possible to completely eliminate state by using constructions fo
 
 But this is a bad idea:  Recursion is _considerably harder_ to understand than a simple `for` loop with state.  Our goal is not to be clever, but to write readable, maintainable code.  So don't do this sort of thing.  The goal is not to eliminate state at all costs, but to reduce the use of state down to the point where it maximises readability.  A little bit of easy-to-understand state is vastly better than a confusingly 'clever' stateless solution borrowed from functional programming.
 
+
+# Distinguish Algorithm-like Code From Data-like Code
+
+This principle is in many ways an expansion and restatement of the previous principle 'Separation Of Functions And State', though typically applicable at a higher level of abstraction.
+
+Time is linear.  Time is just one damn thing after another.
+
+Important Corollary: The execution of a computer program is a _sequence_ of operations, one after the other.  We can say that program flow is _linear_.
+
+Even more important corollary:  Reading is a linear process.  We read one element at a time, _incrementally_ building an understanding of the whole piece.
+
+Thus, to answer "what does this code do?" is to understand the sequence of operations during the execution of the code.  Furthermore, our understanding of that sequence of operations is built by reading parts of the code, one after the other.
+
+Now, a computer program _as a whole_ has an execution order, a program flow.  However, not all parts of the program may have a meaningful execution order.  For example, code that is some kind of data structure is essentially static, and merely accessed by other code, and so does not really have a meaningful execution order.
+
+If code _does_ have a meaningful execution order, then we can describe it as **'algorithm-like'**.  An algorithm is colloquially described as a 'recipe', or sequence of steps to carry out.  So code that is essentially a recipe of steps to execute in order, is algorithm-like.
+
+Code that is _not_ algorithm-like may be described as **'data-like'**.  As mentioned, this tends to be static structures that don't really _do_ anything, just store information to be accessed by other parts of the code.
+
+Note that algorithm-like code may still contain _state_.  An algorithm may work by mutating some state, so that state is an integral part of the algorithm.  We cannot apply a simplistic hard-and-fast rule like "State = Data-like; Pure Functions = Algorithm-like".  Rather, the point is to distinguish the _role_ of state - is it to serve an algorithm?  Or is it more like reference data?
+
+As we become familiar with the distinction between algorithm-like and data-like code, we can see situations where they should be _separated_.  This point is best illustrated with an example such as the following.
+
+### Antipattern: Objects Conflating Algorithms And Data
+
+A common bad construction is an object that:
+1. Stores input parameters as object variables.
+2. Executes an algorithm, using object variables as temporary working variables.
+3. Stores the output of the algorithm as yet more object variables.
+
+Faced with this abomination, the reader thinks:  What is the class doing?  Executing an algorithm?  Storing the result of the algorithm?  Storing the algorithm inputs as a kind of specification?  Are some variables merely irrelevant temporary working variables?  Depressingly, the answer to all of the above is "Yes".
+
+A toy example of this antipattern in Python:
+```py
+class Rotundicity:
+
+    def __init__(a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+    def discombobulate():
+        self.p = self.a**self.b + sin(self.c)/cos(self.a)
+
+    def freneticise():
+        self.q = exp(a, p) + 3.141592654 * self.p * arctan(self.b/self.c)
+
+    def compute():
+        self.rotundicity = log(self.p) - log(self.q) + self.p**2 + self.q**3
+
+    def q_factor():
+        return (self.a + tan(self.b))/self.rotundicity
+```
+
+Consider the stupid example above.  By just reading the class definition, it is impossible to know the _purpose_ and usage of the code.  It seems clear that `rotundicity` is an important thing to be computed, but why is it stored on the class?  Will it be recomputed again at random times?  Are `p` and `q` important?  If not, why are they accessible attributes on the class?  Would a user ever set `p` or `q` directly?  _Et cetera_.
+
+Now, some of the problems with this class could be alleviated if the language had 'private' class member variables, _etc._  (Python does not.)  However, there are fundamental _structural_ problems with the code that should be addressed.  We need to _separate concerns_.  Distinguish the _input data_ from the _algorithm_ from the _output data_, and separate them.  A possible refactoring is as follows:
+
+```py
+class RotundicityInputs:
+    def __init__(a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+
+
+class Rotundicity:
+    def __init__(rotundicity, q_factor):
+        self.rotundicity = rotundicity
+        self.q_factor = q_factor
+
+
+def compute_rotundicity(data: RotundicityInputs):
+    p = discombobulate(data)
+    q = freneticise(data, p)
+
+    rotundicity = log(p) - log(q) + p**2 + q**3
+    q_factor = (data.a + tan(data.b))/rotundicity
+
+    return Rotundicity(
+        rotundicity=rotundicity,
+        q_factor=q_factor,
+        )
+
+
+def discombobulate(data: RotundicityInputs):
+    return data.a**data.b + sin(data.c)/cos(data.a)
+
+
+def freneticise(data: RotundicityInputs, p: float):
+    return exp(data.a, p) + 3.141592654 * p * arctan(data.b/data.c)
+```
+Now it is very clear that `rotundicity` and associated `q_factor` are the outputs that matter.  They are tied together on a simple, lightweight data class, that can be passed around the rest of the program.  It is equally clear that the only parameters that a user can control are `a`, `b`, and `c`.  Finally, the actual algorithm for calculating the outputs from the inputs is now crystal clear.
+
+An alternative refactoring would be to have the `compute_rotundicity()` function be a _method_ on the `RotundicityInputs` class.  This might be a more appropriate structure if the `RotundicityInputs` data class is _state_ that changes frequently, and the rotundicity needs to be computed frequently.
+
+## Enforce Consistency Of State
+
+In the stupid example above, the lack of separation of concerns causes another more subtle but potentially more serious problem: the state can become inconsistent.  Here is how:  There is only _one_ value of `rotundicity` that is mathematically consistent with given inputs `a`, `b`, and `c`.  However, the input variables can be modified _without_ updating the output variables.  Thus, since the 'state' of the `Rotundicity` object consists of all five variables, the state can become inconsistent.
+
+This is better illustrated with a simpler example.  Consider this snippet of code that represents geometric shapes drawn on the screen:
+```py
+class Circle:
+    def __init__(x: float, y: float, r: float):
+        # Position on screen.
+        self.x = x
+        self.y = y
+
+        # Radius
+        self.r = r
+
+        self.calculate_area()  # Sets self.area
+
+    def calculate_area()
+        self.area = 3.141592654 * self.r ** 2
+```
+The problem is that both `r` (radius) and `area` are attributes of a `Circle` object, and radius `r` can be updated _without_ updating `area`.  Thus, the state of the `Circle` object can become inconsistent.
+
+There are at least a couple of fixes.  Probably the best way to enforce consistency of state is to **minimise state**, and not store `area` as state at all - just compute it when needed, in the spirit of functional programming.  The code would look like this:
+```py
+class Circle:
+    def __init__(x: float, y: float, r: float):
+        # Position on screen.
+        self.x = x
+        self.y = y
+
+        # Radius
+        self.r = r
+
+    def calculate_area()
+        return 3.141592654 * self.r ** 2
+```
+This is a very clean solution, that keeps code minimal and easy to understand.
+
+Another approach to enforcing consistency of state is to use 'setters', in the spirit of traditional object-oriented programming.  This approach is automatically re-calculate `area` every time radius `r` is changed.  The following code is not idiomatic Python, but illustrates the approach:
+```py
+class Circle:
+    def __init__(x: float, y: float, r: float):
+        # Position on screen.
+        self.x = x
+        self.y = y
+
+        # Radius
+        self.set_radius(r)
+
+    def set_radius(r: float):
+        self.r = r
+        self._calculate_area()
+
+    def _calculate_area()
+        self.area = 3.141592654 * self.r ** 2
+```
+(There is an idiomatic Python way to define setters, but the syntax will be less clear to readers not familiar with this somewhat obscure Python feature.)
+
+The disadvantage of this approach to enforcing consistency of state is that area _must_ be calculated every time the radius is changed, even if we don't care about the area at the time.  This doesn't matter for this minimal example, but in real-world code, there could be a significant performance cost to automatically doing a costly calculation regardless of whether or not it is needed.  Thus, in general, prefer the simpler method of _minimising state_, to enforce consistency.
 
 # Separate Input/Output From Computation
 
@@ -419,9 +590,52 @@ If your code requires a logical branch, try to do it only once.  Your code will 
 
 Making the _same_ logical branch (i.e. exactly the same logical conditions) in _multiple_ places should be considered an anti-pattern, or at least a code smell.  The resulting code is always cluttered and messy.  Try to refactor it to have only one occurrence of the logical branch.
 
+In graphical form, the left hand pattern is much easier to understand than the right hand pattern:
+
+<div align="center">
+<svg width="600" height="640">
+    <line x1="100" y1="20" x2="100" y2="120" stroke="red" stroke-width="8"/>
+    <line x1="100" y1="120" x2="20" y2="220" stroke="red" stroke-width="8"/>
+    <line x1="100" y1="120" x2="180" y2="220" stroke="red" stroke-width="8"/>
+    <line x1="20" y1="220" x2="20" y2="620" stroke="red" stroke-width="8"/>
+    <line x1="180" y1="220" x2="180" y2="620" stroke="red" stroke-width="8"/>
+    <circle cx="100" cy="20" r="20" fill="blue"/>
+    <polygon points="100,90 70,120 100,150 130,120" fill="lime" stroke="black"/>
+    <circle cx="20" cy="220" r="20" fill="blue"/>
+    <circle cx="20" cy="320" r="20" fill="blue"/>
+    <circle cx="20" cy="420" r="20" fill="blue"/>
+    <circle cx="20" cy="520" r="20" fill="blue"/>    
+    <circle cx="20" cy="620" r="20" fill="blue"/>    
+    <circle cx="180" cy="220" r="20" fill="blue"/>
+    <circle cx="180" cy="320" r="20" fill="blue"/>
+    <circle cx="180" cy="420" r="20" fill="blue"/>
+    <circle cx="180" cy="520" r="20" fill="blue"/>
+    <circle cx="180" cy="620" r="20" fill="blue"/>
+    <line x1="500" y1="20" x2="500" y2="120" stroke="red" stroke-width="8"/>
+    <line x1="500" y1="120" x2="420" y2="220" stroke="red" stroke-width="8"/>
+    <line x1="500" y1="120" x2="580" y2="220" stroke="red" stroke-width="8"/>
+    <line x1="420" y1="220" x2="500" y2="320" stroke="red" stroke-width="8"/>
+    <line x1="580" y1="220" x2="500" y2="320" stroke="red" stroke-width="8"/>
+    <line x1="500" y1="320" x2="500" y2="420" stroke="red" stroke-width="8"/>
+    <line x1="500" y1="420" x2="420" y2="520" stroke="red" stroke-width="8"/>
+    <line x1="500" y1="420" x2="580" y2="520" stroke="red" stroke-width="8"/>
+    <line x1="420" y1="520" x2="500" y2="620" stroke="red" stroke-width="8"/>
+    <line x1="580" y1="520" x2="500" y2="620" stroke="red" stroke-width="8"/>
+    <circle cx="500" cy="20" r="20" fill="blue"/>
+    <polygon points="500,90 470,120 500,150 530,120" fill="lime" stroke="black"/>
+    <circle cx="420" cy="220" r="20" fill="blue"/>
+    <circle cx="500" cy="320" r="20" fill="blue"/>
+    <polygon points="500,390 470,420 500,450 530,420" fill="lime" stroke="black"/>
+    <circle cx="420" cy="520" r="20" fill="blue"/>    
+    <circle cx="580" cy="220" r="20" fill="blue"/>
+    <circle cx="580" cy="520" r="20" fill="blue"/>    
+    <circle cx="500" cy="620" r="20" fill="blue"/>
+</svg>
+</div>
+
 ### Make Branching Explicit
 
-One way to save a line of code is to write a logical branch like this:
+One (misguided) way to save a line of code is to write a logical branch like this:
 ```py
 x = 0  # Default value.
 if some_condition is True:
@@ -431,15 +645,55 @@ Now, does this _look_ like a logical branch?  At first glance, the reader notice
 
 What does mutating a variable have to do with logical branching?  The answer is: _nothing_.  This mutation is not necessary to achieve logical branching.  In fact, while all languages allow logical branching, there are modern languages with an emphasis on safety that strongly discourage mutation, or even forbid it.  (Eg. Rust, and functional languages.)  Mutation typically makes code harder to reason about, so should be kept to an absolute minimum.
 
-The _meaning_ of the code is: make a binary logical choice.  Therefore, the code should reflect that meaning as directly as possible.  The traditional construction does this perfectly:
+The _meaning_ of the code is: make a binary logical choice.  Therefore, the code should reflect that meaning as directly as possible.  The traditional `if else` construction does this perfectly:
 ```py
 if some_condition is True:
     x = 1
 else:
     x = 0
 ```
-The other benefit is that the code at the same _logical level_ (down one branch or the other) is at the same _indentation level_.
+The other benefit of the traditional `if else` is that the code at the same _logical level_ (down one branch or the other) is at the same _indentation level_.
 
+In the diagrams below, the _meaning_ of the code is shown as the tree with red links, and the _execution flow_ of the code is shown as the black arrows.
+
+<div align="center">
+<svg width="600" height="260">
+    <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="8" 
+         refX="8" refY="4" orient="auto">
+            <polygon points="2 4, 0 8, 10 4, 0 0"/>
+    </defs>
+    <-- Left hand tree -->
+    <line x1="100" y1="20" x2="100" y2="120" stroke="red" stroke-width="8"/>
+    <line x1="100" y1="120" x2="20" y2="220" stroke="red" stroke-width="8"/>
+    <line x1="100" y1="120" x2="180" y2="220" stroke="red" stroke-width="8"/>
+    <circle cx="100" cy="20" r="20" fill="blue"/>
+    <polygon points="100,90 70,120 100,150 130,120" fill="lime" stroke="black"/>
+    <circle cx="20" cy="220" r="20" fill="blue"/>
+    <circle cx="180" cy="220" r="20" fill="blue"/>
+    <text x="0" y="260">x = 0</text>
+    <text x="160" y="260">x = 1</text>
+    <--   Flow arrows -->
+    <line x1="20" y1="0" x2="20" y2="195" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="43" y1="217" x2="95" y2="155" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="105" y1="155" x2="155" y2="215" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <-- Right hand tree -->
+    <line x1="500" y1="20" x2="500" y2="120" stroke="red" stroke-width="8"/>
+    <line x1="500" y1="120" x2="420" y2="220" stroke="red" stroke-width="8"/>
+    <line x1="500" y1="120" x2="580" y2="220" stroke="red" stroke-width="8"/>
+    <circle cx="500" cy="20" r="20" fill="blue"/>
+    <polygon points="500,90 470,120 500,150 530,120" fill="lime" stroke="black"/>
+    <circle cx="420" cy="220" r="20" fill="blue"/>
+    <circle cx="580" cy="220" r="20" fill="blue"/>
+    <text x="400" y="260">x = 0</text>
+    <text x="560" y="260">x = 1</text>
+    <-- Flow arrows -->
+    <line x1="530" y1="0" x2="530" y2="115" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="527" y1="127" x2="580" y2="195" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+</svg>
+</div>
+
+The left-hand diagram of the code using mutation shows how the code actually traverses one branch of the tree _before_ encountering the conditional.  This disconnect from the semantics of the code has a cognitive cost.  So the 'shorter' method using variable mutation is actually harder to understand.  Don't try to save a single line of code at the expense of readability.  Just use the traditional `if else` construction.
 
 ### Use Polymorphism To Eliminate Logical Branching
 Consider this code, a toy example of part of some kind of graphics program.  It may not be realistic, but it illustrates a point.
@@ -508,7 +762,7 @@ def calculate_total_area_of_shapes(shapes: list):
 ```
 The code has been simplified considerably, and is easier to read.  This shows the value of method polymorphism.
 
-But let's dig a little deeper.  Obviously, the two functions for calculating area have been _moved_ to be attached to the data structures they operate on. And the main function `calculate_total_area_of_shapes()` no longer contains the _logical branching_.  But where did the logical branching go?  It has apparently disappeared.  In fact, the logical branching is still inside the compiled (byte) code in the form of look-up table or similar.  Method polymorphism has allowed us remove the logical branching from our source code, where it adds complexity for the human reader, and move it into the compiled code, where it is completely out of our sight, and now the responsibility of the computer.
+But let's dig a little deeper.  Obviously, the two functions for calculating area have been _moved_ to be attached to the data structures they operate on. And the main function `calculate_total_area_of_shapes()` is drastically simpler because it no longer contains the logical branching.  Was it moved?  Upon inspection, the **logical branching** has apparently completely **disappeared** from our code!  Where did it go? In fact, the logical branching is still inside the compiled (byte) code in the form of look-up table or similar.  Method polymorphism has allowed us remove the logical branching from our source code, where it adds complexity for the human reader, and move it into the compiled code, where it is completely out of our sight, and now the responsibility of the computer.
 
 Removing the complexity of logical branching from our source code is perhaps an under-appreciated aspect of object-oriented techniques such as this.
 
@@ -927,21 +1181,164 @@ def orchestrator():
 
 However, in practice, this change will often be very difficult.  The original parent class may have many child classes.  So if the main class changes to a different parent, then the main class is no longer considered to be the same type of class as the other child classes.  This may have widespread ramifications for the design.
 
-It seems that inheritance is a very brittle form of coupling.  The abstraction of the inheritance relationship needs to be exactly right, because it can be very difficult to change.  This implies that inheritance is not suitable for agile, iterative designs.
+It seems that inheritance is a very brittle form of coupling.  The abstraction of the inheritance relationship needs to be exactly right, because it can be very difficult to change.  This implies that inheritance is not suitable for code that will developed in an agile, iterative fashion.
 
 # Coupling Modules Into A Structure
 
 ### A Couple Of Structures: Tree And Linear
 
-### A Couple Of Types Of Code: Algorithm-like And Data-like
+Connecting modules together produces a structure that can be considered to be a network of nodes and links (or 'edges').  (The mathematical field of _graph theory_ is the study of these structures and their properties.)
+
+While there are an infinite number of possible structures, a couple of foundational 'platonic forms' will be familiar: trees and chains.  They are intuitive enough that diagrams will be sufficient reminders of their definitions.
+
+#### Chain (Linear structure)
+
+<svg width="500" height="40">
+    <line x1="25" y1="20" x2="475" y2="20" stroke="red" stroke-width="8"/>
+    <circle cx="25" cy="20" r="20" fill="blue"/>
+    <circle cx="175" cy="20" r="20" fill="blue"/>
+    <circle cx="325" cy="20" r="20" fill="blue"/>
+    <circle cx="475" cy="20" r="20" fill="blue"/>    
+</svg>
 
 
-# Principles Of Coupling Modules Into A Structure:
+#### Tree
 
-1. Make dependencies explicit, by putting them at the top, or entry point, of the program.
-2. Code should look like what it does.  Code should look like what it does.  Data-like or algorithm-like.
-3. Make execution flow obvious.
+<svg width="500" height="340">
+    <line x1="250" y1="20" x2="100" y2="170" stroke="red" stroke-width="8"/>
+    <line x1="250" y1="20" x2="400" y2="170" stroke="red" stroke-width="8"/>
+    <line x1="100" y1="170" x2="25" y2="325" stroke="red" stroke-width="8"/>
+    <line x1="100" y1="170" x2="175" y2="325" stroke="red" stroke-width="8"/>
+    <line x1="400" y1="170" x2="325" y2="325" stroke="red" stroke-width="8"/>
+    <line x1="400" y1="170" x2="475" y2="325" stroke="red" stroke-width="8"/>
+    <circle cx="250" cy="20" r="20" fill="blue"/>
+    <circle cx="100" cy="170" r="20" fill="blue"/>
+    <circle cx="400" cy="170" r="20" fill="blue"/>
+    <circle cx="25" cy="320" r="20" fill="blue"/>
+    <circle cx="175" cy="320" r="20" fill="blue"/>
+    <circle cx="325" cy="320" r="20" fill="blue"/>
+    <circle cx="475" cy="320" r="20" fill="blue"/>    
+</svg>
+
+# Make Execution Flow Obvious
+
+Four paragraphs appearing at the beginning of the chapter Distinguish Algorithm-like Code From Data-like Code apply here.  For convenience, we repeat them verbatim here:
+
+Time is linear.  Time is just one damn thing after another.
+
+Important Corollary: The execution of a computer program is a _sequence_ of operations, one after the other.  We can say that program flow is _linear_.
+
+Even more important corollary:  Reading is a linear process.  We read one element at a time, _incrementally_ building an understanding of the whole piece.
+
+Thus, to answer "what does this code do?" is to understand the sequence of operations during the execution of the code.  Furthermore, our understanding of that sequence of operations is built by reading parts of the code, one after the other.
+
+Therefore, a key principle for structuring code for readability is: **make execution flow obvious**.
+
+Before exploring how to apply this principle, we shall first deal with the _exception_ - code that _does not_ have a meaningful execution order, which we have defined as 'data-like code'.
+
+## Data-like Code Favours A Tree Structure
+
+Data can be thought of as just a bunch of static variables.  However, the variables may be grouped in various ways, and the groups themselves may be further grouped into higher-order sets, forming a **hierarchy**.  Thus, a **tree-like** structure can be imposed onto the bunch of variables.  If the data is correctly abstracted in this way, it will make more logical sense, and be easier to understand.
+
+Obviously, code whose main purpose is to represent data should be structured so as represent the abstract tree of variable groupings.  Then, accessing the data in the rest of the program will be as intuitive and logical as possible.
+
+Consider an example of some data in JSON format.  The first example shows data in 'flat' format.
+```json
+{
+
+}
+```
+The second example shows the same data grouped into a sensible tree structure.
+```json
+{
+
+}
+```
+
+## A Fundamental Cause Of Badly-Structured Code
+
+WIP: Copied from elsewhere.  Needs trimming and editing to fit the essay flow.
+
+Why do intelligent people write such obfuscated, tangled code?  Here is why:
+
+They are organising code as if it nothing more than a static bunch of text statements.  Of course, it *is* a static bunch text statements, but crucially, it may be *more* than that: there is another dimension to consider.  We'll come back to this point.
+
+The intelligent but unwise programmer looks at code as a bunch of static text statements, and proceeds to 'organise' it.  The programmer abstracts out an underlying logical structure, and breaks the code into separate parts.  He or she carries on, further breaking each newly-created part into separate logical chunks.  The final result is a large number of separate pieces, all connected together in a **tree** structure.  The intelligent but unwise programmer is probably proud of this achievement, believing that he or she has cleverly followed the Separation Of Concerns Principle to the letter.  The code is now so beautifully *organised*.
+
+Now, this is fine as long as the code is **Data-like**.
+
+But most code in an application is algorithm-like. For algorithm-like code, this approach is completely and utterly wrong.  As we noted above, there is another dimension: time.  More specifically: execution order.
+
+Algorithm-like code consists of a series of actions performed in a sequence.  To understand the code, one must understand the exact sequence of actions.  A linear structure obviously perfectly captures the sequence of actions.  On the other hand, a tree structure *obfuscates* the sequence of actions.
+
+
+## Algorithm-like Code Suits Linear Structures
+
+
+### The Daisy Chain Anti-Pattern
+
+Code that is _linear_, but lacks a proper orchestrator.  Code that is formed like a _linked list_ of function calls, where each function calls the next function in the sequence, instead of returning back up to an orchestrator.
+
+### Summary
+
+**Code should look like what it is.  Code should look like what it does.**
+
+
+# Make Data Flow Follow Execution Flow
+
+
+# Principles Of Coupling Modules Into A Structure:  Rough Working
+
+A couple of rough attempts.  Where to fit Principle Of Obvious Execution Flow in?  It _does_ apply to data-like code, but for algorithm-like code, it is the foundational principle, from which all arguments follow.  Therefore, should this principle be introduced _before_ 'Code should like what it is/does'?
+
+1. Code should look like what it is.  Code should look like what it does.  Data-like or algorithm-like.
+    * Data-like code often suits a tree structure.
+    * Algorithm-like code often suits nested chain structure.  (Diagram.)  Purpose is to make execution flow obvious.  (Should Principle: Make Execution Flow Obvious be nested here?)
+    * A fundamental cause of bad code: _Algorithm-like_ code 'organised' into a tree structure.
+2. Make execution flow obvious.
+3. Make dependencies explicit, by putting them at the top, or entry point, of the program.  Partly covered by Chapter Separate I/O From Computation.  (<-- That chapter should also include reading environment variables.)
 4. Data flow should follow execution flow.
+
+## Structure Should Reflect Purpose
+
+The structure of code should reflect its purpose.  Is the purpose of a module of code to store data or is it to do some computation?
+
+## Data-like Code Favours A Tree Structure
+
+## Algorithm-like Code Suits Chain-like Structures
+
+The defining feature of algorithm-like code is that it has an **execution flow**.  Since that is the purpose of the code, **make execution flow obvious.**
+
+## Make Execution Flow Obvious
+
+While this principle is the essence of good structure for algorithm-like code, the principle still applies for any part of data-like code that has an execution order (for example, in data accessor methods on a data class).
+
+
+# Miscellaneous
+
+## Be Explicit
+Perhaps this should go in Part 1 Fundamentals along with Abstraction?  Perhaps 'Be Explicit' is a rule for creating good abstractions at the right level?  But maybe it is better down here, as a callback to Abstraction, after lots of concrete examples.
+
+##  Name Things Clearly
+Duh.  Make code self-documenting.
+
+## Code Hygiene
+
+Don't call a file `data.txt`.  Call it what it is.  Spend 60 seconds thinking of a great name.  This will save _many minutes_ in the future.  So call it something like `user_accounts_2023-01-21.txt`
+
+Delete temporary files as soon as you can.  They are supposed to be _temporary_.
+
+A common problem is that you can't delete a temporary file immediately, because you may need it again in a few hours or days.  So try this trick:  Put a deletion date in the file name.
+
+Eg. `user_accounts_2023-01-21_DELETE_AFTER_2023-02-01.txt`
+
+Then, in six months time, when you stumble across this long-dead file again, you won't have to spend time investigating whether or not it is safe to delete.
+
+## Use Inclusive-Exclusive Ranges
+
+Though it appears to lack symmetry, using closed/open ranges makes the arithmetic much simpler, and gets rid of loads of code to handle edge cases.
+
+There's a reason the Python range() function uses this convention. range(3, 6) = [3, 4, 5].
 
 # Case Study: Polymorphism
 
