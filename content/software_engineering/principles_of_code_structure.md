@@ -561,6 +561,10 @@ A lot of computer code follows the pattern handed down to us from the ancients:
 
 Separate the code that does Input or Output into its own modules.  Do _not_ make an I/O call in the middle of some code that is doing a computation.
 
+An Input code module deals with things like reading a configuration file, reading environment variables from the operating system, loading data from a file, _et cetera_.
+
+An Output code module will typically handle writing to a file or database, or transferring data through a network call.
+
 Rules of thumb for readable code:
 1. Try to put the calls to the Input module at the beginning of the program.
 2. Try storing the input data in some kind of State module, for later use.
@@ -570,7 +574,7 @@ Input and Output are major dependencies of the program.  For example, a program 
 1. It makes the dependency on the existence of the config file immediately explicit to the reader.
 2. If the file is missing, the program will error immediately, instead of wasting time on a computation that will ultimately fail.
 
-Make dependencies explicit.  (See chapters on Coupling.)  Fail early.  Make sure you have everything that you need before starting the job.
+Make dependencies explicit.  Declare them early; your readers will want to know about them.  Fail early.  Make sure you have everything that you need before starting the job.
 
 
 # Separate Business Logic From Mechanical Work
@@ -1222,11 +1226,11 @@ While there are an infinite number of possible structures, a couple of foundatio
 
 # Make Execution Flow Obvious
 
-Four paragraphs appearing at the beginning of the chapter Distinguish Algorithm-like Code From Data-like Code apply here.  For convenience, we repeat them verbatim here:
+Four paragraphs appearing at the beginning of the chapter _Distinguish Algorithm-like Code From Data-like Code_ apply here.  For convenience, we repeat them verbatim here:
 
 Time is linear.  Time is just one damn thing after another.
 
-Important Corollary: The execution of a computer program is a _sequence_ of operations, one after the other.  We can say that program flow is _linear_.
+Important corollary: The execution of a computer program is a _sequence_ of operations, one after the other.  We can say that program flow is _linear_.
 
 Even more important corollary:  Reading is a linear process.  We read one element at a time, _incrementally_ building an understanding of the whole piece.
 
@@ -1245,79 +1249,239 @@ Obviously, code whose main purpose is to represent data should be structured so 
 Consider an example of some data in JSON format.  The first example shows data in 'flat' format.
 ```json
 {
-
+    "student_id": 12345678,
+    "name": "Joe Aloysius Bloggs",
+    "email": "j.bloggs@gmail.com",
+    "phone": 07412345678,
+    "street_address": "21 Jump Street",
+    "town": "Crapstone",
+    "county": "Devon",
+    "postcode": "PL20 7PJ",
+    "bank": "Barclays",
+    "account_name": "J A Bloggs",
+    "sort_code": "12-34-56",
+    "account_number": "87654321",
 }
 ```
 The second example shows the same data grouped into a sensible tree structure.
 ```json
 {
-
+    "student_id": 12345678,
+    "name": "Joe Aloysius Bloggs",
+    "contact_details": {
+        "email": "j.bloggs@gmail.com",
+        "phone": 07412345678,
+        "postal_address": {
+            "street_address": "21 Jump Street",
+            "town": "Crapstone",
+            "county": "Devon",
+            "postcode": "PL20 7PJ",
+        }
+    },
+    "bank_details": {
+        "bank": "Barclays",
+        "account_name": "J A Bloggs",
+        "sort_code": "12-34-56",
+        "account_number": "87654321",
+    }
 }
 ```
+The second example with the tree structure is obviously _much_ easier to parse.
+
+Suppose the JSON example above needs to be represented as a data structure in a computer program.  There are various ways of converting JSON into, for example, a composition of objects.  The details of that conversion are not important here - what is important is that the organised tree structure is preserved.  Assuming that details of reading and converting the JSON are abstracted away, then (Python) code that uses the data structure could look like this:
+```py
+student_json = read_student_json()
+student = convert_json_to_student_object(student_json)
+
+...
+
+email = student.contact_details.email
+
+...
+
+postcode = student.contact_details.postal_address.postcode
+
+```
+As we can see, the tree structure is accessed in an intuitive way using the nested 'dot' syntax of object attributes.
+
+The logical grouping and sub-grouping of all the data elements makes the data structure easy to understand and work with.  So favour tree-like structures for data-like code.
 
 ## A Fundamental Cause Of Badly-Structured Code
 
-WIP: Copied from elsewhere.  Needs trimming and editing to fit the essay flow.
+Now that we have seen how tree-like code structures can be a great idea, let us indulge in a rant about how tree-like structures can be a _terrible_ idea. 
 
-Why do intelligent people write such obfuscated, tangled code?  Here is why:
+Why do intelligent people write such obfuscated, tangled code?  Here is one reason:
 
-They are organising code as if it nothing more than a static bunch of text statements.  Of course, it *is* a static bunch text statements, but crucially, it may be *more* than that: there is another dimension to consider.  We'll come back to this point.
+They are organising code as if it were nothing more than a static bunch of text statements.  Of course, it _is_ a static bunch text statements, but crucially, it may be _more_ than that: there is another dimension to consider.  We'll come back to this point.
 
-The intelligent but unwise programmer looks at code as a bunch of static text statements, and proceeds to 'organise' it.  The programmer abstracts out an underlying logical structure, and breaks the code into separate parts.  He or she carries on, further breaking each newly-created part into separate logical chunks.  The final result is a large number of separate pieces, all connected together in a **tree** structure.  The intelligent but unwise programmer is probably proud of this achievement, believing that he or she has cleverly followed the Separation Of Concerns Principle to the letter.  The code is now so beautifully *organised*.
+The intelligent but unwise programmer looks at code as a bunch of static text statements, and proceeds to 'organise' it.  The programmer abstracts out an underlying logical structure, and breaks the code into separate parts.  He or she carries on, further breaking each newly-created part into separate logical chunks.  The final result is a large number of separate pieces, all connected together in a **tree** structure.  The intelligent but unwise programmer is probably proud of this achievement, believing that he or she has cleverly followed the Separation Of Concerns Principle to the letter.  The code is now so beautifully _organised_.
 
-Now, this is fine as long as the code is **Data-like**.
+Now, as we have seen, this is eminently appropriate as long as the code is **data-like**.
 
 But most code in an application is algorithm-like. For algorithm-like code, this approach is completely and utterly wrong.  As we noted above, there is another dimension: time.  More specifically: execution order.
 
-Algorithm-like code consists of a series of actions performed in a sequence.  To understand the code, one must understand the exact sequence of actions.  A linear structure obviously perfectly captures the sequence of actions.  On the other hand, a tree structure *obfuscates* the sequence of actions.
+Algorithm-like code consists of a series of actions performed in a sequence.  To understand the code, one must understand the exact sequence of actions.  A linear type of structure obviously perfectly captures the sequence of actions.  On the other hand, a tree structure _obfuscates_ the sequence of actions.
 
 
 ## Algorithm-like Code Suits Linear Structures
 
 
-### The Daisy Chain Anti-Pattern
+As the preceding sections have made clear, linear-type code structures maximise the readability of algorithm-like code.  Let us consider a plan of attack for achieving well-structured code, using our skills of software abstraction to separate concerns.
 
-Code that is _linear_, but lacks a proper orchestrator.  Code that is formed like a _linked list_ of function calls, where each function calls the next function in the sequence, instead of returning back up to an orchestrator.
+Practical Advice:
+1)  Most code follows the pattern handed down from the ancients: Take some data, do things to the data, put the data somewhere.
+2)  Assume we are considering a non-trivial algorithm of this type, that takes up more than one screen of code to implement.
+3)  Take the entire algorithm, and decide what the different *logical* elements are.  A logical element does *one thing*, it is a logically distinct operation.  This breakdown has nothing to do with the number of lines of code: Some operations can be done in one line of code, others in one thousand.  In other words, _separate concerns._
+4) Create a separate function to do each logical element.  Because of the clean logical separation, it should be easy to give the function an accurate and complete self-documenting name.
+5) Now the entry point, the algorithm in question, can be written as a 'main' or 'orchestrator' function containing a linear sequence of sub-functions.
 
-### Summary
+Now, code is fractal: each logical element described above may itself be composed of distinct logical sub-elements.  The same principle applies at any level: for each element, write code that clearly reveals the flow of execution order.
 
-**Code should look like what it is.  Code should look like what it does.**
+Because of the fractal nature, we end up with code that has a nested structure, and is therefore tree-like in some sense.  However, the structure is _not_ a 'pure' tree - there is a critical additional property: The _linearity_ of each element means that an explicit _execution flow_ can be traced through the structure.
+
+The diagram below illustrates the 'nested chain' structure.  The black arrows show the execution flow.
+
+<div align="center">
+<svg width="400" height="640">
+    <defs>
+        <marker id="arrowhead" markerWidth="10" markerHeight="8" 
+         refX="8" refY="4" orient="auto">
+            <polygon points="2 4, 0 8, 10 4, 0 0"/>
+    </defs>
+    <-- Main function -->
+    <line x1="20" y1="20" x2="20" y2="620" stroke="red" stroke-width="8"/>
+    <line x1="20" y1="220" x2="200" y2="120" stroke="red" stroke-width="8"/>
+    <line x1="20" y1="220" x2="200" y2="320" stroke="red" stroke-width="8"/>
+    <line x1="200" y1="120" x2="200" y2="320" stroke="red" stroke-width="8"/>
+    <line x1="200" y1="253" x2="350" y2="187" stroke="red" stroke-width="8"/>
+    <line x1="200" y1="253" x2="350" y2="320" stroke="red" stroke-width="8"/>
+    <line x1="350" y1="187" x2="350" y2="320" stroke="red" stroke-width="8"/>
+    <line x1="20" y1="520" x2="170" y2="453" stroke="red" stroke-width="8"/>
+    <line x1="20" y1="520" x2="170" y2="587" stroke="red" stroke-width="8"/>
+    <line x1="170" y1="453" x2="170" y2="587" stroke="red" stroke-width="8"/>
+    <circle cx="20" cy="20" r="20" fill="blue"/>
+    <circle cx="20" cy="120" r="20" fill="blue"/>
+    <circle cx="20" cy="220" r="20" fill="blue"/>
+    <circle cx="20" cy="320" r="20" fill="blue"/>
+    <circle cx="20" cy="420" r="20" fill="blue"/>
+    <circle cx="20" cy="520" r="20" fill="blue"/>
+    <circle cx="20" cy="620" r="20" fill="blue"/>
+    <-- Sub-function 1 -->
+    <circle cx="200" cy="120" r="15" fill="blue"/>
+    <circle cx="200" cy="187" r="15" fill="blue"/>
+    <circle cx="200" cy="253" r="15" fill="blue"/>
+    <circle cx="200" cy="320" r="15" fill="blue"/>
+    <-- Sub-sub-function -->
+    <circle cx="350" cy="187" r="15" fill="blue"/>
+    <circle cx="350" cy="253" r="15" fill="blue"/>
+    <circle cx="350" cy="320" r="15" fill="blue"/>
+    <-- Sub-function 2 -->
+    <circle cx="170" cy="453" r="15" fill="blue"/>
+    <circle cx="170" cy="520" r="15" fill="blue"/>
+    <circle cx="170" cy="587" r="15" fill="blue"/>
+    <--   Flow arrows -->
+    <line x1="50" y1="0" x2="50" y2="185" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="60" y1="182" x2="180" y2="115" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="225" y1="120" x2="225" y2="220" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="235" y1="212" x2="330" y2="172" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="375" y1="187" x2="375" y2="320" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="350" y1="345" x2="220" y2="280" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="220" y1="290" x2="220" y2="320" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="200" y1="345" x2="40" y2="250" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <line x1="50" y1="270" x2="50" y2="450" stroke="black" stroke-width="2" marker-end="url(#arrowhead)"/>
+    <text x="37" y="475">Etc</text>
+</svg>
+</div>
+
+An example sketch in Python would look something like:
+```py
+def main():
+    config = read_config()
+    data = load_data_from_file(config)
+    transformed_data = operation_1(data)
+    ...
+    ...
+    discombobulated_data = operation_4(transmogrified_data)
+    ...
 
 
-# Make Data Flow Follow Execution Flow
+def operation_1(data):
+    modified_data = sub_operation_1(data)
+    ...
+    mangled_data = sub_operation_3(altered_data)
+    ...
 
 
-# Principles Of Coupling Modules Into A Structure:  Rough Working
+def sub_operation_3(data):
+    mutated_data = sub_sub_operation_1()
+    ...
 
-A couple of rough attempts.  Where to fit Principle Of Obvious Execution Flow in?  It _does_ apply to data-like code, but for algorithm-like code, it is the foundational principle, from which all arguments follow.  Therefore, should this principle be introduced _before_ 'Code should like what it is/does'?
 
-1. Code should look like what it is.  Code should look like what it does.  Data-like or algorithm-like.
-    * Data-like code often suits a tree structure.
-    * Algorithm-like code often suits nested chain structure.  (Diagram.)  Purpose is to make execution flow obvious.  (Should Principle: Make Execution Flow Obvious be nested here?)
-    * A fundamental cause of bad code: _Algorithm-like_ code 'organised' into a tree structure.
-2. Make execution flow obvious.
-3. Make dependencies explicit, by putting them at the top, or entry point, of the program.  Partly covered by Chapter Separate I/O From Computation.  (<-- That chapter should also include reading environment variables.)
-4. Data flow should follow execution flow.
+# Et cetera.
+```
 
-## Structure Should Reflect Purpose
+As noted in the section above _A Fundamental Cause Of Badly-Structured Code_, the point is _not_ to create a neatly-structured tree of nodes, with each node having minimal content, resulting in a very deep tree.  Therefore, resist the temptation to group the functions into higher-level functions with vague names like `transform()`.  This incredibly widespread plague of abstraction addiction is the *opposite* of writing readable code.
+
+Furthermore, as noted in the chapter _Separate Input/Output From Computation_, Input dependencies such as reading a configuration file, reading environment variables from the operating system, loading a data file, _etc_, should happen at the **start** of the algorithm.  Making dependencies obvious is an important part of making code easy to understand quickly, so declare them up front. 
+
+
+### The Daisy-Chain Anti-Pattern
+
+Code with a 'daisy-chain' structure has a _linear_ structure, but lacks a proper 'main' or 'orchestrator' function.  Code consists of a chain of function calls, where each function calls the next function in the sequence, instead of returning back up to an orchestrator.  There are two main flaws of this structure:
+
+1. With no 'main' or orchestrator function, the overall structure of the algorithm cannot be seen anywhere.  One must read all the functions in turn to build a mental picture of the key steps in the algorithm.
+2. The entry point will be the first function in the sequence.  Since it will have a single clear concern, it should have a simple descriptive name such as `read_data_file()`.  However, its final act is to call the next function in the sequence, thus ultimately executing the entire program.  Executing the entire program is the _mother_ of all side-effects for a simple function!
+
+So don't do this.  Instead, use the (nested) linear structures with orchestrators described in the previous section.
+
+The example sketch above structured in this anti-pattern would look something like this:
+```py
+def read_config():
+    ...
+    load_data_from_file(config)
+
+
+def load_data_from_file(config):
+    ...
+    operation_1(data)
+
+
+def operation_1(data):
+    ...
+    operation_2(data):
+
+
+def operation_2(data):
+    ...
+    operation_3(data)
+```
+
+## Summary
 
 The structure of code should reflect its purpose.  Is the purpose of a module of code to store data or is it to do some computation?
 
-## Data-like Code Favours A Tree Structure
+Note that a data-like code component may still have algorithm-like code within it, for example, non-trivial accessor methods on a complex data structure.  Within those accessor methods, the advice for algorithm-like code applies (favour linear 'nested chain' structures).
 
-## Algorithm-like Code Suits Chain-like Structures
+**Code should look like what it is.  Code should look like what it does.**
 
-The defining feature of algorithm-like code is that it has an **execution flow**.  Since that is the purpose of the code, **make execution flow obvious.**
+---
+Work In Progress below this line.
 
-## Make Execution Flow Obvious
-
-While this principle is the essence of good structure for algorithm-like code, the principle still applies for any part of data-like code that has an execution order (for example, in data accessor methods on a data class).
+# Data Flow Should Follow Execution Flow
 
 
-# Miscellaneous
+# Interfaces: The Glue That Connects
 
-## Be Explicit
-Perhaps this should go in Part 1 Fundamentals along with Abstraction?  Perhaps 'Be Explicit' is a rule for creating good abstractions at the right level?  But maybe it is better down here, as a callback to Abstraction, after lots of concrete examples.
+Rough notes:
+
+1. An API should be **multi-granular**.  All atomic operations should be exposed.  And all _routine_ operations should have a simple API call to do them.  Higher-order operations should be achieved by internally calling a sequence of atomic operations.
+
+2. Consider using Spec Data Objects.  That is, rather than having a large function interface with many parameters, pass in a rich data object.  Then, changes to the interface can be done by modifying the spec object, instead of modifying the function call signature.  This is especially useful if many variables must be passed into sub-functions, which also suffer from signature bloat.
+
+
+# Miscellaneous Advice
+
+Some advice on low-level code constructions that nevertheless have a big impact on code readability.
 
 ##  Name Things Clearly
 Duh.  Make code self-documenting.
@@ -1338,9 +1502,23 @@ Then, in six months time, when you stumble across this long-dead file again, you
 
 Though it appears to lack symmetry, using closed/open ranges makes the arithmetic much simpler, and gets rid of loads of code to handle edge cases.
 
-There's a reason the Python range() function uses this convention. range(3, 6) = [3, 4, 5].
+There's a reason the Python range() function uses this convention: `range(3, 6) = [3, 4, 5]`.
 
-# Case Study: Polymorphism
+# Thinking Like An Engineer
+
+## Be Explicit
+
+Crush Ambiguity.
+
+A callback to the art of abstraction first encountered at the beginning of the book.  'Be Explicit' is another rule for creating good abstractions at the right level.
+
+## Single Source Of Truth
+
+
+## Format Code Perfectly At All Times
+
+Keep code formatting perfect at all times.  _Don't_ say to yourself "I'll come back and fix the formatting later."  Write your code in the same way that proper chefs practise 'clean as you go' in a commercial kitchen.  This discipline helps instil both the attention to detail and sensitivity to structure that characterise a good engineering mind.
+
+# Case Studies?: Polymorphism?
 
 The classic example with `square.area()` and `circle.area()` illustrating the power of method polymorphism.
-
