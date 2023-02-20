@@ -1608,16 +1608,53 @@ In general, just separate the concerns of algorithm-like code and data-like code
 
 The above advice is a general corollary of the Golden Rule: Separation Of Concerns.
 
----
-Work In Progress below this line.
 
 # Interfaces: The Glue That Connects
 
-Rough notes:
+An **interface** to a code module is the point of entry.  Examples include:
+* A function call.  The interface is defined by the function name and signature (arguments passed in).
+* Class instantiation, and the suite of public methods on the object.
+* Internet requests via the `http` protocol.
 
-1. An API should be **multi-granular**.  All atomic operations should be exposed.  And all _routine_ operations should have a simple API call to do them.  Higher-order operations should be achieved by internally calling a sequence of atomic operations.
+An Application Programming Interface (API) is any interface that a programmer could use, by learning the protocol, and writing correct code for it.  In practice, the words 'API' and 'interface' are generally used interchangeably.
 
-2. Consider using Spec Data Objects.  That is, rather than having a large function interface with many parameters, pass in a rich data object.  Then, changes to the interface can be done by modifying the spec object, instead of modifying the function call signature.  This is especially useful if many variables must be passed into sub-functions, which also suffer from signature bloat.
+An interface may be private or public.  Somewhat different guidelines apply between private and public interfaces.
+
+#### Private Interfaces
+
+Private interfaces can be modified without external consequence.  Furthermore, private interfaces _should_ be modified as the program iterates towards a sound structure engineered for readability.  The _ideal_ interface should emerge organically as the program is developed.
+
+#### Public Interfaces
+
+Any interface that an external party uses is _public_.  Therefore, modifying the interface will affect the external party.  If the external party is just some engineers on the other side of the office, then this can be coordinated.  However, if the external party could be any random user on the internet, then more care is required.
+
+In general, a public interface should be **versioned**, so that if it is changed, the change is explicitly advertised.
+
+A public interface needs _much_ more care in its design than a private interface, because it is much harder to change.
+
+### API Design
+
+#### Multi-Granular
+
+Especially for a non-trival public API, the interface should have **different levels of granularity**.  This means:
+
+1. **Atomic operations** should be defined and exposed.  These are the lowest-level building blocks of API operations.  This is the lowest level of granularity.  The atomic operations should form a **complete set**, so that any possible action with the API can be achieved by a sequence of atomic operations.
+
+2. **Routine operations** should be possible with a single simple call.  That is, the most common uses of the API should be _trivial_ to achieve.  Internally, each routine operation should use atomic operations, so that by definition, a routine operation call is equivalent to a sequence of atomic operation calls.
+
+3. Further operations should be defined _very sparingly_.  Outside of the full set of atomic operations, and operations for the commonest use cases, it is wise to be very reluctant to add any more.  Further operations add confusing bloat to the API, and are a maintenance burden, both of which are costs that are probably greater than the value of adding an API call for some obscure operation.
+
+#### Consider Using Specification Data Objects
+
+Suppose you are developing a function that is turning out to have rather a lot of parameters.  The function call is becoming unwieldy.  Furthermore, many of those parameters must be further passed down into sub-functions, that are themselves suffering a bloated signature.
+
+Now, this _may_ be a sign of a bad abstraction - is the function trying to do much?  Should it be broken into separate concerns?  However, let us assume that it is indeed a good abstraction, and the entry point really does require that many parameters, due to the nature of the domain problem.
+
+One solution is to modify the function signature to accept a single rich data object, instead of a multitude of low-level parameters.  The 'parameter space' is thought of as a separate concern that can be abstracted out into a data object.  Generally, this abstraction will represent a _specification_ for the algorithm that the function carries out.  This spec object can be easily passed down into sub-functions, which tends to significantly tidy up code.
+
+One possible benefit of this approach is that the _effective_ signature of the function can be changed _without_ actually changing the function signature, by simply modifying the structure of the specification data object.  Of course, changing the spec object may cause its own problems: strictly speaking, we are still changing the API.  But the hope is that this form of change will be easier than changing the function call itself.
+
+This advice on API design is an example of the application of previous advice to separate state into its own object, since objects are perfectly suited for data-like code.
 
 
 # Miscellaneous Advice
@@ -1625,9 +1662,26 @@ Rough notes:
 Some advice on low-level code constructions that nevertheless have a big impact on code readability.
 
 ##  Name Things Clearly
-Duh.  Make code self-documenting.
+
+Everything in your code should have a name that is precise, descriptive, and at the appropriate level of abstraction.  Then your code can be said to be _self-documenting_.  If the reader trusts that all names have been chosen with care, then the reader can understand the code much more quickly because the names describe what each piece is and does.  Self-documenting code also needs fewer comments to explain the code.
+
+However, naming things is _hard_.  The skill of naming things well takes a long time to develop.  Perhaps this skill is one signifier of a 'senior engineer'.  Here are some guidelines to consider when trying to find a suitable name.
+
+For clarity, consider a simple floating-point number variable that needs a self-documenting name.  The variable name could:
+1. Describe what it **is**, in the sense of 'how it was constructed'.  For example, a variable computed from the sum some financial transactions could be called `sum_of_transactions`.
+2. Describe what it will be **used for**.  For example, if the variable is fed into a function that ultimately generates a financial statement, then an appropriate name could be `sum_for_statement_generator`.
+3. Describe what is **is**, in the sense of 'what it means, in the context of the problem domain'.  For example, the variable _actually_ represents net profit, then an obvious candidate name would be `net_profit`.
+
+Options 1 and 2 are the easiest to work with.  Either one would likely add _considerably_ more value than a vague variable name such as `val`.
+
+However, Option 3 is likely to be the most valuable.  Describing the _meaning_ of a variable, _why it matters_, will generally give the most insight into what the code as a whole is supposed to achieve.  But this is also generally the most difficult option to implement: It requires a proper understanding of the problem domain, and the skill at seeing the correct level of abstraction to describe this small part of the domain.
+
+Naming things is _hard_.  But the payoff of good, self-documenting variable names is huge, so persevere in finding them.
+
 
 ## Code Hygiene
+
+The phrase 'code hygiene' is sometimes used to refer to the practice of cleaning up temporary files and other sundry mess resulting from software development, and keeping necessary configuration files _etc_ in a tidy state.  The idea is to keep your engineering workspace in a state that minimises confusion.  A few hints follow.
 
 Don't call a file `data.txt`.  Call it what it is.  Spend 60 seconds thinking of a great name.  This will save _many minutes_ in the future.  So call it something like `user_accounts_2023-01-21.txt`
 
@@ -1638,6 +1692,10 @@ A common problem is that you can't delete a temporary file immediately, because 
 Eg. `user_accounts_2023-01-21_DELETE_AFTER_2023-02-01.txt`
 
 Then, in six months time, when you stumble across this long-dead file again, you won't have to spend time investigating whether or not it is safe to delete.
+
+
+---
+Work In Progress below this line.
 
 ## Use Inclusive-Exclusive Ranges
 
