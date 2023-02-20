@@ -1670,7 +1670,7 @@ However, naming things is _hard_.  The skill of naming things well takes a long 
 For clarity, consider a simple floating-point number variable that needs a self-documenting name.  The variable name could:
 1. Describe what it **is**, in the sense of 'how it was constructed'.  For example, a variable computed from the sum some financial transactions could be called `sum_of_transactions`.
 2. Describe what it will be **used for**.  For example, if the variable is fed into a function that ultimately generates a financial statement, then an appropriate name could be `sum_for_statement_generator`.
-3. Describe what is **is**, in the sense of 'what it means, in the context of the problem domain'.  For example, the variable _actually_ represents net profit, then an obvious candidate name would be `net_profit`.
+3. Describe what is **is**, in the sense of 'what it means, in the context of the problem domain'.  For example, if the variable _actually_ represents net profit, then an obvious candidate name would be `net_profit`.
 
 Options 1 and 2 are the easiest to work with.  Either one would likely add _considerably_ more value than a vague variable name such as `val`.
 
@@ -1687,23 +1687,35 @@ Don't call a file `data.txt`.  Call it what it is.  Spend 60 seconds thinking of
 
 Delete temporary files as soon as you can.  They are supposed to be _temporary_.
 
-A common problem is that you can't delete a temporary file immediately, because you may need it again in a few hours or days.  So try this trick:  Put a deletion date in the file name.
+A common problem is that you can't delete a temporary file immediately, because you may need it again in a few hours or days.  So try this trick:  Put a deletion date in the file name. Eg.
 
-Eg. `user_accounts_2023-01-21_DELETE_AFTER_2023-02-01.txt`
+`user_accounts_2023-01-21_DELETE_AFTER_2023-02-01.txt`
 
 Then, in six months time, when you stumble across this long-dead file again, you won't have to spend time investigating whether or not it is safe to delete.
 
 
----
-Work In Progress below this line.
-
 ## Use Inclusive-Exclusive Ranges
 
-Though it appears to lack symmetry, using closed/open ranges makes the arithmetic much simpler, and gets rid of loads of code to handle edge cases.
+Famed computer scientist Edsger Dijkstra wrote an essay in 1982 explaining why the best convention to describe a range of numbers is to have an **inclusive** lower bound and an **exclusive** upper bound.  To illustrate by example, a range of natural numbers defined by the pair `[3, 6)` denotes the numbers `[3, 4, 5]`.  In other words, the the lower bound (`3`) is **included** in the range, and the upper bound (`6`) is **excluded** from the range.
 
-There's a reason the Python range() function uses this convention: `range(3, 6) = [3, 4, 5]`.
+To summarise Doctor Dijkstra's reasoning:
+
+1. The number of elements in the range is simply upper bound minus lower bound.  (This convenient arithmetic is not true for the inclusive/inclusive or exclusive/exclusive conventions.)
+
+2. The lowest natural number, zero, can be included in a range, without having the lower bound go outside of the set of natural numbers.  (The lower bound is zero; it doesn't have to be eg. -1, as it might for the convention of an _exclusive_ lower bound.)
+
+3. For two _adjacent_ ranges, the upper bound of one is the lower bound of the other.  So if one wants to define a new range 'starting from' an existing range, the lower bound is already known; no calculation is required.  (Without this convention, calculating the lower bound of the new adjacent range can be surprisingly non-trivial, especially for time ranges.)
+
+Doctor Dijkstra goes on to say that all four conventions were tried in the Mesa programming language, and the empirical evidence showed that the other three conventions were "a constant source of clumsiness and mistakes".  The essay is well worth a read.
+
+The value of Dijkstra's inclusive/exclusive convention is particularly clear when dealing with time spans.  Consider two adjacent time ranges in Dijkstra's convention: 1:00 - 2:00, 2:00 - 3:00.  Now try to express these ranges with the inclusive/inclusive convention.  What is the upper bound on the lower range? 1:59?  1:59:59?  What about milliseconds?  _Et cetera_.  The upper bound would depend on the resolution to which we measure time.  The same problem applies to the exclusive/exclusive convention.
+
+So prefer Dijkstra's inclusive/exclusive convention for any ranges.
 
 # Thinking Like An Engineer
+
+---
+Work In Progress below this line.
 
 ## Be Explicit
 
@@ -1716,8 +1728,10 @@ A callback to the art of abstraction first encountered at the beginning of the b
 
 ## Format Code Perfectly At All Times
 
-Keep code formatting perfect at all times.  _Don't_ say to yourself "I'll come back and fix the formatting later."  Write your code in the same way that proper chefs practise 'clean as you go' in a commercial kitchen.  This discipline helps instil both the attention to detail and sensitivity to structure that characterise a good engineering mind.
+Keep code formatting perfect at all times.  _Don't_ say to yourself "I'll come back and fix the formatting later."  Write your code in the same way that professional chefs practise 'clean as you go' in a commercial kitchen.  This discipline helps instil both the attention to detail and sensitivity to structure that characterise a good engineering mind.
 
-# Case Studies?: Polymorphism?
+# Case Studies?: Polymorphism?  Design Patterns?
 
-The classic example with `square.area()` and `circle.area()` illustrating the power of method polymorphism.
+The classic example with `square.area()` and `circle.area()` illustrating the power of method polymorphism?
+
+Various design patterns from the Gang Of Four?
