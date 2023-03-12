@@ -7,7 +7,7 @@ weight = 10
 
 [extra]
 pane_colour = "steelblue"
-grid_row = 4
+grid_row = 3
 grid_column = 2
 +++
 

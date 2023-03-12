@@ -7,7 +7,7 @@ weight = 20
 
 [extra]
 pane_colour = "Gold"
-grid_row = 4
+grid_row = 3
 grid_column = 3
 +++
 
