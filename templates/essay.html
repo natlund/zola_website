@@ -17,7 +17,7 @@
     {% set topic = get_section(path=topic_path) %}
 
     <header style="background: {{ topic.extra.pane_colour }}">
-      <h1 class="title">{{page.title }}</h1>
+      <h1 class="title">{{ page.title }}</h1>
       <p class="subtitle"><strong>{{ page.date }}</strong></p>
     </header>
 
@@ -36,20 +36,20 @@
       
       <p><a style="padding-left: 1em;" href="{{ topic.permalink | safe }}">{{ topic.title }}</a></p>
 
-      <ul>
+      <ol>
         {% for sibling_page in topic.pages %}
           <li>
             <a href="{{ sibling_page.permalink | safe }}">{{ sibling_page.title }}</a>
           </li>
         {% endfor %}
-      </ul>
+      </ol>
       
       <hr>
 
       <p style="padding-left: 1em;">{{ page.title }}</p>
     
         {% if page.toc %}
-        <ol>
+        <ul>
         {% for h1 in page.toc %}
             <li>
                 <a href="{{ h1.permalink | safe }}">{{ h1.title }}</a>
@@ -64,21 +64,57 @@
                 {% endif %}
             </li>
         {% endfor %}
-        </ol>
+        </ul>
         {% endif %}
     </nav>
+
+    {% for sibling_page in topic.pages %}
+        {% if sibling_page.title == page.title %}
+           {% set_global page_index = loop.index0 %}
+        {% endif %}
+    {% endfor %}
+
+    {% if page_index > 0 %}
+        {% set previous_page = topic.pages | nth(n=page_index - 1) %}
+    {% endif %}      
+
+    {% set next_page = topic.pages | nth(n=page_index + 1) %}
+
+    <div class="previous_next_header">
+        <p>
+        {% if previous_page %}
+            <a style="float: left;" href="{{ previous_page.permalink | safe }}">Previous: {{ previous_page.title }}</a>
+        {% endif %}
+
+        {% if next_page %}
+            <a style="float: right;" href="{{ next_page.permalink | safe }}">Next: {{ next_page.title }}</a>
+        {% endif %}
+       </p>
+    </div>
 
     <article class="essay">
         {{ page.content | safe }}
         
         <p style="text-align: center; font-size: 24pt;"> &#128608 </p>
+
     
     </article>
+
+    <div class="previous_next_footer">
+        <p>
+        {% if previous_page %}
+            <a style="float: left;" href="{{ previous_page.permalink | safe }}">Previous: {{ previous_page.title }}</a>
+        {% endif %}
+
+        {% if next_page %}
+            <a style="float: right;" href="{{ next_page.permalink | safe }}">Next: {{ next_page.title }}</a>
+        {% endif %}
+       </p>
+    </div>
     
-    
-  
+
     <footer>
-      <p class="datestamp"><strong>2022-01-01</strong></p>
+      <p class="datestamp"><strong>{{ page.date }}</strong></p>
     </footer>
   
   </body>
