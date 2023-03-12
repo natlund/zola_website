@@ -88,28 +88,14 @@ The last example raises an important issue that we will briefly touch on.  If I 
 
 We are now ready to summarize our classes and orders of money into a six part table.
 
-
-|                |  Commodity Money           |  Fiat Money                   |
-|----------------|:--------------------------:|:-----------------------------:|
-|  Zeroth Order  |  Rice, Cigarettes          |  Central Bank Money           |
-|  First Order   |  Warehouse Receipts        |  Bank Deposits                |
-|  Second Order  |  Commodity Loan Contracts  |  Bank Deposits                |
-
-
-    +----------------+----------------------------+-------------------------------+
-    |                |                            |                               |
-    |                |  Commodity Money           |  Fiat Money                   |
-    |                |                            |                               |
-    +================+============================+===============================+
-    |                |                            |                               |
-    |  Zeroth Order  |  Rice, Cigarettes          |  Central Bank Money           |
-    |                |                            |                               |
-    +----------------+----------------------------+-------------------------------+
-    |                |                            |                               |
-    |  First Order   |  Warehouse Receipts        |  Bank Deposits                |
-    |                |                            |                               |
-    +----------------+----------------------------+-------------------------------+
-    |                |                            |                               |
-    |  Second Order  |  Commodity Loan Contracts  |  Bank Deposits                |
-    |                |                            |                               |
-    +----------------+----------------------------+-------------------------------+
+<table>
+   <caption>The Six Types Of Money</caption>
+   <thead>
+      <tr> <th><!--Blank--></th> <th>Commodity Money</th>          <th>Fiat Money</th> </tr>
+   </thead>
+   <tbody>
+      <tr> <th>Zeroth Order</th> <td>Rice, Cigarettes</td>         <td>Central Bank Money</td> </tr>
+      <tr> <th>First Order</th>  <td>Warehouse Receipts</td>       <td>Bank Deposits</td></tr>
+      <tr> <th>Second Order</th> <td>Commodity Loan Contracts</td> <td>Bank Deposits</td> </tr>
+   </tbody>
+</table>
