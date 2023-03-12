@@ -27,6 +27,16 @@
         {% set topic = get_section(path=sec_path) %}
         <li>
             <a href="{{ topic.permalink | safe }}">{{ topic.title }}</a>
+            {% if topic.subsections %}
+                <ul>
+                    {% for subsect_path in topic.subsections %}
+                        {% set subsect = get_section(path=subsect_path) %}
+                            <li>
+                                <a href="{{ subsect.permalink | safe }}">{{ subsect.title }}</a>
+                            </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
             {% if topic.pages %}
                 <ul>
                     {% for page in topic.pages %}
