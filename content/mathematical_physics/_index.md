@@ -10,3 +10,5 @@ pane_colour = "olivedrab"
 grid_row = 5
 grid_column = 2
 +++
+
+[Calculus Of Variations](@/mathematical_physics/calculus_of_variations.md)
