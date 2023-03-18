@@ -19,8 +19,7 @@
 body {
     display: grid;
     grid-template-columns: 16em 25em 25em 1fr;
-/*     grid-gap: 1em; */
-    grid-auto-rows: minmax(2em, auto);
+    grid-auto-rows: auto;
 
     background: Ivory;
     
@@ -81,7 +80,7 @@ nav {
     margin-bottom: 1em;
 }
 
-.section_pane {
+.section_pane_clickable {
     // These three (pane placement and colour) are overridden by values in the metadata of each Section _index.md file.
     grid-row: 3; 
     grid-column: 2;
@@ -94,8 +93,28 @@ nav {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     padding-block-start: 1em;
     padding-block-end: 1em;
-/*     padding-left: 3em; */
+
     text-align: center;
+
+    border-radius: 6px;
+    border-width: 0;
+
+    box-shadow: rgba(45, 35, 66, 0.4) 0 2px 4px,
+                rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+                #D6D6E7 0 -3px 0 inset;
+}
+
+.section_pane_clickable:hover {
+    box-shadow: rgba(45, 35, 66, 0.4) 0 4px 8px,
+                rgba(45, 35, 66, 0.3) 0 7px 13px -3px,
+                #D6D6E7 0 -3px 0 inset;
+    
+    transform: translateY(-2px);
+}
+
+.section_pane_clickable:active {
+    box-shadow: #D6D6E7 0 3px 7px inset;
+    transform: translateY(2px);
 }
 
 .deadspace {

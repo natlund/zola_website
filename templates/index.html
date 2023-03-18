@@ -11,7 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet"> 
   </head>
   
-  <body>
+<body>
 
 <header>
     <h1 class="title">{{ section.title }}</h1>
@@ -58,18 +58,18 @@
 </article>
 
 {% for sec_path in section.subsections %}
-  {% set topic = get_section(path=sec_path) %}
+    {% set topic = get_section(path=sec_path) %}
 
-  <article class="section_pane"
-    style="
-      grid-row: {{ topic.extra.grid_row }};
-      grid-column: {{ topic.extra.grid_column }};
-      background: {{ topic.extra.pane_colour }};
-      "
-  >
-
-    <a href={{ topic.permalink | safe }}><h2>{{ topic.title }}</h2></a>
-  </article>
+    <a href={{ topic.permalink | safe }}
+        class="section_pane_clickable"
+        style="
+            grid-row: {{ topic.extra.grid_row }};
+            grid-column: {{ topic.extra.grid_column }};
+            background: {{ topic.extra.pane_colour }};
+        "
+    >
+        <h2>{{ topic.title }}</h2>
+    </a>
 
 {% endfor %}
 
@@ -77,6 +77,6 @@
     <p class="datestamp"><strong>2022-01-01</strong></p>
 </footer>
   
-  </body>
+</body>
 
 </html>
