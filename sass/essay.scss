@@ -140,3 +140,47 @@ th, td {
     text-align: center;
 }
 
+
+.dense-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 3px solid black;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.dense-table caption {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    font-size: 18pt;
+    margin-bottom: 1em;
+}
+
+.dense-table thead {
+    background-color: gold;    
+}
+
+.dense-table tbody tr:nth-of-type(odd) th {
+    background-color: lightskyblue;
+}
+
+.dense-table tbody tr:nth-of-type(even) th {
+    background-color: cornflowerblue;
+}
+
+.dense-table tbody tr:nth-of-type(odd) {
+    background-color: ivory;
+}
+
+.dense-table tbody tr:nth-of-type(even) {
+    background-color: lemonchiffon;
+}
+
+.dense-table td {
+    border: 1px solid black;
+    text-align: left;
+}
+
+.dense-table th {
+    border: 1px solid black;
+    text-align: center;
+}
