@@ -142,7 +142,7 @@ Modular code is very desirable from the standpoint of the maintenance and evolut
 
 ## Types Of Connections
 
-Some types of connection, in approximate order of simplicity.
+Some specific forms of connection, in approximate order of simplicity.
 
 1. Function call.
 2. Method call on class.
@@ -151,4 +151,18 @@ Some types of connection, in approximate order of simplicity.
 5. Method call on injected object.
 6. Inheritance.  Method call on parent class.
 
-As well as simplicity, we are also interested in how each connection type supports modularity.  The 'replacement' type of modification is arguably the simplest, and the syntax is essentially the same as for 'simple extension', so we shall analyse 'replaceability' here.
+These may be grouped into three different types:
+
+- Coupling By Direct Connection
+  - Function call
+  - Method call on class
+  - Object instantiation, then method call on object
+- Coupling By Dependency Injection
+  - Function call of injected function
+  - Method call on injected object
+- Inheritance
+  - Method call on parent class
+
+In the next three chapters, we'll look at these forms of connection.  We'll make some observations on the relative simplicity of each form.
+
+As well as simplicity, we are also interested in how each connection type supports modularity.  The 'replacement' type of modification is arguably the simplest, and the syntax is essentially the same as for 'simple extension', so we shall analyse the 'replaceability' of each connection form.
