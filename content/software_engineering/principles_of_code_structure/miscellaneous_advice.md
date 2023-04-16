@@ -43,9 +43,12 @@ Then, in six months time, when you stumble across this long-dead file again, you
 
 ## Use Inclusive-Exclusive Ranges
 
-Famed computer scientist Edsger Dijkstra wrote an essay in 1982 explaining why the best convention to describe a range of numbers is to have an **inclusive** lower bound and an **exclusive** upper bound.  To illustrate by example, a range of natural numbers defined by the pair `[3, 6)` denotes the numbers `[3, 4, 5]`.  In other words, the the lower bound (`3`) is **included** in the range, and the upper bound (`6`) is **excluded** from the range.
+Famed computer scientist Edsger Dijkstra wrote an essay in 1982 explaining why the best convention to describe a range of numbers is to have an **inclusive** lower bound and an **exclusive** upper bound.  In mathematics, this corresponds to the _half-open interval_ with a _closed_ lower bound and an _open_ upper bound, denoted `[a, b)`, where `a` is contained in the interval, but `b` is not.
 
-To summarise Doctor Dijkstra's reasoning:
+To illustrate by example, a range of natural numbers defined by the pair `[3, 6)` denotes the numbers `[3, 4, 5]`.  In other words, the the lower bound (`3`) is **included** in the range, and the upper bound (`6`) is **excluded** from the range.
+
+
+To summarise Dijkstra's reasoning:
 
 1. The number of elements in the range is simply upper bound minus lower bound.  (This convenient arithmetic is not true for the inclusive/inclusive or exclusive/exclusive conventions.)
 
