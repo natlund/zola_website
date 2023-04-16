@@ -1,7 +1,7 @@
 +++
 title = "Thinking Like An Engineer"
 date = 2022-12-19
-weight = 190
+weight = 230
 +++
 
 # Thinking Like An Engineer

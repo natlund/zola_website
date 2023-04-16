@@ -1,7 +1,7 @@
 +++
 title = "Data Flow Should Follow Execution Flow"
 date = 2022-12-19
-weight = 160
+weight = 200
 +++
 
 # Data Flow Should Follow Execution Flow

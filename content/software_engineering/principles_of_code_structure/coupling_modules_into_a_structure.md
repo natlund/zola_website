@@ -1,7 +1,7 @@
 +++
 title = "Coupling Modules Into A Structure"
 date = 2022-12-19
-weight = 140
+weight = 180
 +++
 
 # Coupling Modules Into A Structure

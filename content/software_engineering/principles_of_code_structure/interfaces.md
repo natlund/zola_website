@@ -1,7 +1,7 @@
 +++
 title = "Interfaces - The Glue That Connects"
 date = 2022-12-19
-weight = 170
+weight = 210
 +++
 
 # Interfaces: The Glue That Connects

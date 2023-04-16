@@ -1,10 +1,10 @@
 +++
 title = "Coupling Summary"
 date = 2023-04-16
-weight = 138
+weight = 170
 +++
 
-## Summary
+# Summary
 
 <table class="dense-table">
    <caption>Some Connections Between Software Modules</caption>

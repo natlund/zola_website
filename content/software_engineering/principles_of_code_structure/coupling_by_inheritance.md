@@ -1,10 +1,10 @@
 +++
 title = "Coupling By Inheritance"
 date = 2023-04-16
-weight = 136
+weight = 160
 +++
 
-### Inheritance
+# Inheritance
 
 ```py
 class ParentClass:
@@ -27,7 +27,7 @@ def orchestrator():
     main_processor.main()
 ```
 
-#### Simplicity:
+### Simplicity:
 
 Relatively complex.  There are three modules, and the overhead of instantiating the container class.
 
@@ -62,7 +62,7 @@ On the other hand, the inheritance connection between `MainClass` and `ParentCla
 </svg>
 </div>
 
-#### Replaceability:
+### Replaceability:
 Best case: the new functionality properly belongs on the parent class, just like the old functionality.
 ```py
 class ParentClass:

@@ -1,10 +1,10 @@
 +++
 title = "Coupling By Dependency Injection"
 date = 2023-04-16
-weight = 134
+weight = 150
 +++
 
-### Function Call Of Injected Function
+# Function Call Of Injected Function
 
 ```py
 def secondary(data):
@@ -23,7 +23,7 @@ def orchestrator():
 
 ```
 
-#### Simplicity:
+### Simplicity:
 No longer simple.  There are now _three_ modules required.  However, each module is itself very simple.
 
 The coupling consists of two elements: the Orchestrator passing Function B into Module A, and the call on Function B.  Worryingly, the two elements of coupling are _necessarily_ in different parts of the code.
@@ -58,7 +58,7 @@ In order to fully understand the coupling, the reader needs to follow a function
 </svg>
 </div>
 
-#### Replaceability:
+### Replaceability:
 The defining attribute of this form of coupling is that the `main()` function _does not need to be touched_ to change functionality.
 
 However, the _orchestrator_ function will need to be changed, to pass in the new function.
@@ -89,7 +89,7 @@ def orchestrator():
 * `main()` function is **not** changed.
 
 
-### Method Call On Injected Object
+# Method Call On Injected Object
 
 ```py
 class SomeStupidClass:
@@ -112,7 +112,7 @@ def orchestrator():
 
 ```
 
-#### Simplicity:
+### Simplicity:
 
 Relatively complex.  There are now _three_ modules required.
 
@@ -123,17 +123,17 @@ Note that while the object is anonymous, the method call is on the actual named 
 
 This coupling pattern can manifest in a range of different ways, from perfectly readable to horrendously obfuscated, depending on how the _type_ (class) of the injected object is controlled.  Let's explore three of those ways.
 
-##### Injected Object Has Single Fixed Class
+#### Injected Object Has Single Fixed Class
 
 First, consider the case where the injected object is _always_ an instance of a _single_ class.  The object may vary in its particulars, but there is only one bit of code to look at.  This should not pose any great problems for readability.
 
-##### Injected Object Of Unknown Class But With Well-Defined Interface
+#### Injected Object Of Unknown Class But With Well-Defined Interface
 
 Next, consider the case where the class of the injected object is unknown, but the method constitutes a _well-defined interface_, in the following sense: While the behaviour of the method necessarily changes depending on the class, the behaviour is always sufficiently well-constrained that the reader _does not_ really need to know about the detailed differences between the methods of the different classes.  In other words, the method call can always be treated as a call to a 'black box', whose inner workings do not matter to the reader trying to understand the code of Module A.
 
 The method polymorphism used in this case should not pose a great problem for readability, _as long as_ the software design guarantees that the reader can always treat the method call as a call to a closed 'black box'.  In practice, it may be difficult to always achieve this.  If the reader _does_ end up needing to know the details inside a method, then this interface could be considered a 'leaky abstraction', at least from the reader's point of view, because the information hidden inside the abstraction 'leaks out'.
 
-##### Injected Object Of Unknown Class
+#### Injected Object Of Unknown Class
 
 Finally, consider the case where the class of the injected object is unknown, and the reader simply _must_ read the details inside the method in order comprehend the code.
 
@@ -170,7 +170,7 @@ In order to fully understand the coupling, the reader needs to follow an object 
 </svg>
 </div>
 
-#### Replaceability:
+### Replaceability:
 Could in principle depend on whether the new functionality needs a whole new class or just a new method on the existing class.  However, the whole point of the flexibility of the orchestrator pattern is to _easily inject a different object_, so that's what we'll consider here.
 
 ```py

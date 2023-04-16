@@ -1,7 +1,7 @@
 +++
 title = "Miscellaneous Advice"
 date = 2022-12-19
-weight = 180
+weight = 220
 +++
 
 # Miscellaneous Advice

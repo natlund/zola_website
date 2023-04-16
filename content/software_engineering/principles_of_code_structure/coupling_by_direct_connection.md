@@ -1,10 +1,10 @@
 +++
 title = "Coupling By Direct Connection"
 date = 2023-04-16
-weight = 132
+weight = 140
 +++
 
-###  Function Call
+#  Function Call
 
 ```py
 def secondary(data):
@@ -16,7 +16,7 @@ def main():
     secondary(data)
     ...
 ```
-#### Simplicity:
+### Simplicity:
 As simple as possible.  The function call _is_ the connection.  The only coupling is a direct connection to an explicit module.
 
 <div align="center">
@@ -40,7 +40,7 @@ As simple as possible.  The function call _is_ the connection.  The only couplin
 </div>
 
 
-#### Replaceability:
+### Replaceability:
 A new function `alternative()` must be written.  Then changing the coupling simply requires changing the function call in `main()`:
 ```py
 # def secondary(data):
@@ -60,7 +60,7 @@ def main():
 * Write new replacement function.
 * One-line change in `main()`, to call new function.
 
-### Method Call On Class
+# Method Call On Class
 
 ```py
 
@@ -76,7 +76,7 @@ def main():
     SomeStupidClass.secondary(data)
     ...
 ```
-#### Simplicity:
+### Simplicity:
 Almost as simple as possible.  The class simply acts as a _namespace_ for the `secondary()` function.  In some situations, having such a namespace may tidy up the code and make it more readable.
 
 The method call _is_ the connection.  The only coupling is a direct connection to the explicit method of a class.
@@ -103,7 +103,7 @@ The method call _is_ the connection.  The only coupling is a direct connection t
 </svg>
 </div>
 
-#### Replaceability:
+### Replaceability:
 This depends on whether the new alternative function lives in the _same_ namespace class, or needs its own new class.
 
 Like this:
@@ -154,7 +154,7 @@ def main():
 * One-line change in `main()`, to call different class or method.
 
 
-### Object Instantiation, Then Method Call On Object
+# Object Instantiation, Then Method Call On Object
 
 ```py
 
@@ -171,7 +171,7 @@ def main():
     ...
 ```
 
-#### Simplicity:
+### Simplicity:
 No longer as simple as possible, but still straightforward.  There is the extra overhead of having to instantiate the container class.
 
 The coupling now has two elements: instantiating the object, and calling the method on the object.  If both are done in the same place, then the coupling is trivial to understand.  However, if instantiation is done in a very different place to the method call, then the reader has to mentally keep track of both parts of the coupling to properly understand how Module A depends on Module B.
@@ -200,7 +200,7 @@ The coupling now has two elements: instantiating the object, and calling the met
 </div>
 
 
-#### Replaceability:
+### Replaceability:
 Swapping functionality requires either a new method on the existing class, or a new class.
 
 Like this:
