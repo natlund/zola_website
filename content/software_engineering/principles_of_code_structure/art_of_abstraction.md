@@ -120,9 +120,9 @@ This book is in a large part a guide to abstractions that have proven useful - a
 
 In software engineering, abstraction often results in _information hiding_.  Consider this: Some lines of code are seen to be all related to the same abstract thing, so the code is pulled out into a separate module (function or object).  The module _name_ describes the abstraction, and the _details_ are _hidden away_ inside the module.  At the point in the code where the new module is used, the abstraction is reified as an explicit module name, and the irrelevant details are hidden.
 
-For more discussion, see the chapter below on Separation Of Complexity.
+For more discussion, see the chapter [_Separate Inherent And Collateral Complexity_](@/software_engineering/principles_of_code_structure/separate_inherent_and_collateral_complexity.md)
 
-Not all abstractions involve information hiding.  An essential aspect of the code may be pulled out into its own module, but nothing is hidden.  All elements are simply accessible from a single coherent module.  (See definition of coherent in chapter on Separation Of Concerns.)
+Not all abstractions involve information hiding.  An essential aspect of the code may be pulled out into its own module, but nothing is hidden.  All elements are simply accessible from a single coherent module.  (See the definition of _coherent_ in the chapter [_Separation Of Concerns_](@/software_engineering/principles_of_code_structure/separation_of_concerns.md).)
 
 ### Malabstractions
 

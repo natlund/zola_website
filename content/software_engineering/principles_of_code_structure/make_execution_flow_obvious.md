@@ -6,7 +6,7 @@ weight = 190
 
 # Make Execution Flow Obvious
 
-Four paragraphs appearing at the beginning of the chapter _Distinguish Algorithm-like Code From Data-like Code_ apply here.  For convenience, we repeat them verbatim here:
+Four paragraphs appearing at the beginning of the chapter [_Distinguish Algorithm-like From Data-like Code_](@/software_engineering/principles_of_code_structure/distinguish_algorithmlike_from_datalike_code.md) apply here.  For convenience, we repeat them verbatim here:
 
 Time is linear.  Time is just one damn thing after another.
 
@@ -210,9 +210,9 @@ def sub_operation_3(data):
 # Et cetera.
 ```
 
-As noted in the section above _A Fundamental Cause Of Badly-Structured Code_, the point is _not_ to create a neatly-structured tree of nodes, with each node having minimal content, resulting in a very deep tree.  Therefore, resist the temptation to group the functions into higher-level functions with vague names like `transform()`.  This incredibly widespread plague of abstraction addiction is the *opposite* of writing readable code.
+As noted in the section above [_A Fundamental Cause Of Badly-Structured Code_](@/software_engineering/principles_of_code_structure/make_execution_flow_obvious.md#a-fundamental-cause-of-badly-structured-code), the point is _not_ to create a neatly-structured tree of nodes, with each node having minimal content, resulting in a very deep tree.  Therefore, resist the temptation to group the functions into higher-level functions with vague names like `transform()`.  This incredibly widespread plague of abstraction addiction is the *opposite* of writing readable code.
 
-Furthermore, as noted in the chapter _Separate Input/Output From Computation_, Input dependencies such as reading a configuration file, reading environment variables from the operating system, loading a data file, _etc_, should happen at the **start** of the algorithm.  Making dependencies obvious is an important part of making code easy to understand quickly, so declare them up front. 
+Furthermore, as noted in the chapter [_Separate Input/Output From Computation_](@/software_engineering/principles_of_code_structure/separate_input_output_from_computation.md), Input dependencies such as reading a configuration file, reading environment variables from the operating system, loading a data file, _etc_, should happen at the **start** of the algorithm.  Making dependencies obvious is an important part of making code easy to understand quickly, so declare them up front. 
 
 
 ### The Daisy-Chain Anti-Pattern
