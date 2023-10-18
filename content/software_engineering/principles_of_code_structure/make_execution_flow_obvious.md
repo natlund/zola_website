@@ -246,6 +246,41 @@ def operation_2(data):
     operation_3(data)
 ```
 
+
+## Lexical Order Should Follow Logical Order
+
+By **Lexical Order** we mean the **order of words** in our source code.
+
+By **Logical Order** we mean the logical order of operations that must be done to achieve the aim of the code.  Note that this is **not** necessarily the order of operations that execute on the machine, as that may depend on the compiler optimisations _et cetera_.  Rather, we mean the logical order of steps that makes it easiest for a human to understand what the code is trying to achieve.
+
+For example, consider some code that does two simple steps:
+1. Retrieve a value from a data source. (Eg. a Python dictionary.)
+2. Pass that value into a function.
+
+Code to achieve that is sometimes seen written something like this:
+```py
+some_function(
+    relevant_value = source_dictionary.get("obscurely_named_variable")
+    )
+```
+To be understood, the code above must be read _from the inside out_.  For such a simple example, this is not such a problem, but the code is easier to read if the lexical order follows the logical order of operations:
+```py
+well_named_variable = source_dictionary.get("obscurely_named_variable")
+some_function(relevant_value=well_named_variable)
+```
+Arguably, one cost of this improved code is that is now necessary to create an explicit 'dummy' variable to pass data to the next line.  But there are two benefits to having this dummy variable:
+1. Debugging is much easier.  A debugger can show the value of the dummy variable.
+2. The dummy variable can be given a self-documenting name that describes its purpose _in the context of the function call_.  As the example indicates, the original variable name in the data source may have an obscure name that reveals nothing about its meaning in the local context.
+
+Now, for such a simple example as the one above, inside-out code hardly matters.  But for more complex function signatures, and any kind of nesting of function calls _et cetera_, inside-out code rapidly becomes a problem:  The reader must perfectly maintain a mental stack of code operations in reverse order, or re-read up and down several times to figure out what is going on.
+
+A reasonable metric of 'readability' is the extent to which code can be read _in order, from top to bottom, without going back_.  Obviously, code in which the lexical order follows the logical order maximises this readability metric.
+
+For simple examples, inside-out code does not matter, and could be argued to be a matter of taste.  But the style must rapidly be abandoned for code of any complexity, if readability is to be maintained.  For consistency, then, it makes sense to always favour code in which lexical order follows logical order.
+
+As an aside, the inside-out style mirrors function composition in mathematical notation. For example, `f(g(h(x)))` means 'apply function `h` to `x`, then apply function `g` to the result, then finally apply function `f` to the final result'.  Since functional programming languages are inspired by the mathematics of functions, perhaps they have tended to promote inside-out coding styles.  Interestingly, modern functional programming languages tend to provide constructions with a syntax along the lines of: `h() -> g() -> f()`, that denote function composition in a readable left-to-right manner i.e. the lexical order follows the logical order.
+
+
 ## Summary
 
 The structure of code should reflect its purpose.  Is the purpose of a module of code to store data or is it to do some computation?
