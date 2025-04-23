@@ -26,21 +26,19 @@ When refactoring code, or developing code organically through a series of protot
 5. At length, we will have some idea of all the different _concerns_ in the code.
 6. Then we can separate the concerns out, and begin experimenting with a better architecture. 
 
+### Coherence
+
+A piece of code may be described as **coherent** if all of its lines of code relate to a single concern.  A module of code is 'incoherent' if some of its lines of code relate to one concern, and other lines relate to a different concern.
+
+Coherent modules of code are the _consequence_ of correctly separating concerns.
+
 ### Collation Of Concerns (Single Concern In A Single Place)
 
 We have established the value of a single module of code only dealing with a single concern.
 
 The complement to that is to pull all the code that deals with the same concern into a single module of code.  In other words, _collate_ all the code that deals a single concern, and put it in a single module.
 
-This also makes the code easier to understand.  A single responsibility is in a single place.  The code is also much easier to modify - only a single place in the code needs to be touched.
-
-This principle tends to apply more to refactoring existing code (or prototypes).  Code that is well-designed from scratch will automatically tend to have a single concern in a single place.
-
-### Coherence
-
-A piece of code may be described as **coherent** if all of its lines of code relate to a single concern.  A module of code is 'incoherent' if some of its lines of code relate to one concern, and other lines relate to a different concern.
-
-Coherent modules of code are the _consequence_ of correctly separating concerns.
+This concept is important enough to be dealt with fully in its own separate chapter.  (The following chapter [_Single Source Of Truth_](@/software_engineering/principles_of_code_structure/single_source_of_truth.md).)
 
 ### Summary: Separate Concerns; Collate Concerns
 1. A single module of code should deal with a single concern.
